@@ -1,6 +1,7 @@
-package pl.kesco.myfarmer.persistence.entity;
+package pl.kesco.myfarmer.model.entity;
 
 import lombok.*;
+import pl.kesco.myfarmer.model.Unit;
 
 import javax.persistence.*;
 
@@ -10,17 +11,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "users")
-public class User {
+@Table(name = "products")
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private String email;
-    private String password;
-    @Column(name = "phone_number")
-    private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
 
+    private Long quantity;
 }

@@ -1,9 +1,9 @@
-apackage pl.kesco.myfarmer;
+package pl.kesco.myfarmer;
 
 import org.junit.Test;
 
 import pl.kesco.myfarmer.persistence.UserRepository;
-import pl.kesco.myfarmer.persistence.entity.User;
+import pl.kesco.myfarmer.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
