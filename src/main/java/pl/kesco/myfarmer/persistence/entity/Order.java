@@ -1,4 +1,4 @@
-package pl.kesco.myfarmer.persistence;
+package pl.kesco.myfarmer.persistence.entity;
 
 import lombok.*;
 
@@ -10,15 +10,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "users")
-public class User {
+@Table(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String email;
-    private String password;
+    private Long orderId;
+
+    @ManyToOne
+    @Column(name = "customer_id")
+    private Long customerId;
+
 
 
 }
