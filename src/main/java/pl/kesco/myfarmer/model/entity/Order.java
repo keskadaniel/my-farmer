@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+//    @ManyToOne
     @Column(name = "customer_id")
     private Long customerId;
 

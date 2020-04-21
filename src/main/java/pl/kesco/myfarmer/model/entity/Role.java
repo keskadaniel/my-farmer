@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
 
     @Id
@@ -19,7 +19,7 @@ public class Role {
     private Long id;
 
     @Column(name = "user_id")
-    @ManyToMany
+//    @ManyToMany
     private Long userId;
 
     @Enumerated(EnumType.STRING)

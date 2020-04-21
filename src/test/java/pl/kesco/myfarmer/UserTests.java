@@ -1,9 +1,13 @@
 package pl.kesco.myfarmer;
 
+import org.hibernate.mapping.Any;
 import org.junit.Test;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import pl.kesco.myfarmer.persistence.UserRepository;
 import pl.kesco.myfarmer.model.entity.User;
+import pl.kesco.myfarmer.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +15,13 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class UserTests {
+
+    @Mock
+    UserService userService;
 
 
     @Test
@@ -28,6 +36,18 @@ public class UserTests {
         //then
         assertEquals(users.size(), 1);
 
+    }
+
+    @Test
+    public void should_add_user(){
+        //given
+        var user = prepareUsersList().get(0);
+        when(userService.create(Mockito.any(User.class))).thenReturn(user);
+
+        //when
+        var createduser = userService.create(User.builder().build());
+
+        //then
     }
 
     private List<User> prepareUsersList(){

@@ -20,6 +20,8 @@ public class Product {
 
     private String name;
 
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private Unit unit;
 

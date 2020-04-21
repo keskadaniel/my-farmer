@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="daniel (generated)" id="1587388427205-1">
+
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="users_pk"/>
+            </column>
+            <column name="name" type="VARCHAR"/>
+            <column name="email" type="VARCHAR"/>
+            <column name="password" type="VARCHAR"/>
+            <column name="phone_number" type="VARCHAR"/>
+        </createTable>
+
+        <createTable tableName="orders">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="orders_pk"/>
+            </column>
+            <column name="customer_id" type="BIGINT"/>
+        </createTable>
+
+    <createTable tableName="products">
+        <column name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="products_pk"/>
+        </column>
+        <column name="name" type="VARCHAR"/>
+        <column name="description" type="VARCHAR"/>
+        <column name="unit" type="VARCHAR"/>
+        <column name="quantity" type="BIGINT"/>
+    </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="table_name_pk"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="role" type="VARCHAR"/>
+        </createTable>
+
+    </changeSet>
+
+
+</databaseChangeLog>
