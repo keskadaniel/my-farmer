@@ -24,4 +24,10 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    private boolean activated;
+    private boolean enabled;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
 }

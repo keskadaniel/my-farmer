@@ -10,6 +10,7 @@
             <column name="email" type="VARCHAR"/>
             <column name="password" type="VARCHAR"/>
             <column name="phone_number" type="VARCHAR"/>
+
         </createTable>
 
         <createTable tableName="orders">

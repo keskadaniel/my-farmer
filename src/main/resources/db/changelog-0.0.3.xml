@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="daniel (generated)" id="1587388427205-3">
+
+            <addAutoIncrement columnDataType="int"
+                              columnName="id"
+                              defaultOnNull="false"
+                              generationType="ALWAYS"
+                              incrementBy="1"
+                              schemaName="public"
+                              startWith="100"
+                              tableName="users"/>
+
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          defaultOnNull="false"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+                          tableName="roles"/>
+
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          defaultOnNull="false"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+                          tableName="products"/>
+
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          defaultOnNull="false"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+                          tableName="orders"/>
+        </changeSet>
+
+</databaseChangeLog>
+
+
