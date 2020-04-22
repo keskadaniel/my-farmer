@@ -14,4 +14,10 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("oops")
+    public String nonUniqueEmail(){
+
+        return "user/error-page";
+    }
+
 }

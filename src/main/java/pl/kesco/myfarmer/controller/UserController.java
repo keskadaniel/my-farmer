@@ -1,7 +1,6 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.AddUserDto;
 import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.service.UserService;
+import pl.kesco.myfarmer.service.UtilService;
 
 import javax.validation.Valid;
 
@@ -21,10 +21,11 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder encoder;
+    private final UtilService utilService;
 
     @GetMapping("/new")
     public String addUser(AddUserDto addUserDto, final ModelMap model){
+        //TODO model has params to rm
         model.addAttribute("user", addUserDto);
         return "user/new-user";
     }
@@ -34,6 +35,13 @@ public class UserController {
     public ModelAndView addNewUser(@Valid @ModelAttribute("user") AddUserDto addUserDto,
                                    final ModelMap model){
 
+        boolean isEmailUnique = validateUniqueEmailForAccount(addUserDto.getEmail());
+
+        //TODO add alert for user
+        if( isEmailUnique == false){
+            return new ModelAndView("redirect:/oops", model);
+        }
+
         userService.create(User.builder()
         .name(addUserDto.getName())
         .email(addUserDto.getEmail())
@@ -42,6 +50,10 @@ public class UserController {
         .build());
 
         return new ModelAndView("redirect:/", model);
+    }
+
+    private boolean validateUniqueEmailForAccount(String email) {
+        return utilService.validateIsEmailUnique(email);
     }
 
 
