@@ -2,11 +2,13 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.persistence.ProductRepository;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,11 @@ public class ProductService {
         log.info("Created product: {}, with id: {}", newProduct.getName(), newProduct.getId());
 
         return newProduct;
+    }
+
+    public List<Product> getAllProducts(){
+
+        return productRepo.findAllByOrderByUserIdAsc();
     }
 
 
