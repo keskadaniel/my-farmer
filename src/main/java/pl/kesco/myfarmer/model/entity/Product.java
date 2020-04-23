@@ -4,6 +4,7 @@ import lombok.*;
 import pl.kesco.myfarmer.model.Unit;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -31,8 +32,9 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    //NEW
     private Double price;
     private boolean deleted;
+    @Column(name = "create_date")
+    private ZonedDateTime createDate;
 
 }

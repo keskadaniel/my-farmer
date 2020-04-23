@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dołóż produkt</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/products}" th:object="${product}" method="post">
+    <div class="form-group">
+        <label for="exampleInputPassword1">Nazwa</label>
+        <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Opisz go</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="opis" th:field="*{description}" >
+    </div>
+    <div class="form-group">
+        <label>Jak będziesz sprzedawać?</label>
+        <select id="unit" name="role" th:field="*{unit}">
+            <option th:value="'KG'" th:text="kilogram"></option>
+            <option th:value="'PIECE'" th:text="sztuka"></option>
+            <option th:value="'LITER'" th:text="litr"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Ile tego masz?</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="ilość" th:field="*{quantity}">
+    </div>
+    <div class="form-group">
+        <label >Cena za sztukę, kg lub litr?</label>
+        <input type="text" class="form-control" placeholder="cena" th:field="*{price}">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+
+</body>
+</html>
