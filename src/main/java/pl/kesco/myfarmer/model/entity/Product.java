@@ -26,4 +26,13 @@ public class Product {
     private Unit unit;
 
     private Long quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
+
+    //NEW
+    private Double price;
+    private boolean deleted;
+
 }

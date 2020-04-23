@@ -3,6 +3,7 @@ package pl.kesco.myfarmer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -17,10 +18,15 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-    @Column(name = "customer_id")
-    private Long customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private User customerId;
 
+    private ZonedDateTime date;
+
+    //kupione
+
+    private boolean ordered;
 
 
 }
