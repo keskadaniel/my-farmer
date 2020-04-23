@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.CreateProductDto;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.ProductService;
+import pl.kesco.myfarmer.service.UserService;
 
 import javax.validation.Valid;
 
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 public class ProductController {
 
     private final ProductService productService;
+    private final UserService userService;
 
 
     @GetMapping("/new")

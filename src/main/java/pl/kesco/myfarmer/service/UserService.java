@@ -1,6 +1,8 @@
 package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.User;
@@ -13,6 +15,7 @@ public class UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder encoder;
 
+
     public User create(User user) {
         var createdUser = userRepo.save(
                 user
@@ -23,6 +26,14 @@ public class UserService {
                         .build());
 
         return createdUser;
+    }
+
+
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = authentication.getName();
+
+        return userRepo.findByEmailIgnoreCase(loggedUsername).get();
     }
 
 }
