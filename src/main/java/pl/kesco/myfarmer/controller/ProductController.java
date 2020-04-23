@@ -25,7 +25,7 @@ public class ProductController {
 
 
     @GetMapping("/new")
-    public String addUser(CreateProductDto productDto
+    public String newProduct(CreateProductDto productDto
             , final ModelMap model){
 
         model.addAttribute("product", productDto);
@@ -34,7 +34,7 @@ public class ProductController {
 
 
     @PostMapping
-    public ModelAndView addNewUser(@Valid @ModelAttribute("product") CreateProductDto productDto,
+    public ModelAndView createProduct(@Valid @ModelAttribute("product") CreateProductDto productDto,
                                    final ModelMap model){
 
         productService.create(Product.builder()

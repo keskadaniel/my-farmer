@@ -23,6 +23,13 @@ public class UserController {
     private final UserService userService;
     private final UtilService utilService;
 
+    @GetMapping("/account")
+    public String userAccount(){
+
+        //TODO account with ID
+        return "user/account";
+    }
+
     @GetMapping("/new")
     public String addUser(AddUserDto addUserDto, final ModelMap model){
         //TODO model has params to rm

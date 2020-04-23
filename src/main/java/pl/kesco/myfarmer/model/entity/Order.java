@@ -24,8 +24,6 @@ public class Order {
 
     private ZonedDateTime date;
 
-    //kupione
-
     private boolean ordered;
 
 
