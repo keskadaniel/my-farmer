@@ -44,7 +44,7 @@ public class ProductController {
 
         final Long productToOrderQuantity = productToBasketDto.getQuantity();
 
-        if( productToOrderQuantity > productToOrder.getQuantity() ){
+        if( productToOrderQuantity > productToOrder.getQuantity() || productToOrderQuantity <= 0){
             return new ModelAndView("redirect:/oops", model);
         }
 
