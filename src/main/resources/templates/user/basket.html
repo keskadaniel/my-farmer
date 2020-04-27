@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${basketProducts.empty or basketProducts==null}">
+    <tr th:if="${basketProducts.empty}">
         <td colspan="2">Aktualnie nie masz nic w koszyku</td>
     </tr>
     <tr th:each="product : ${basketProducts}">
@@ -24,13 +24,13 @@
         <td><span th:text="${product.product.name}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
     </tr>
+    <div th:if="${not basketProducts.empty}">
+        <form method="POST" th:action="@{/basket}">
 
-    <form method="POST" th:action="@{/basket}">
+            <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
 
-        <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
-
-    </form>
-
+        </form>
+    </div>
 
     </tbody>
 </table>
