@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${basketProducts.empty}">
+    <tr th:if="${basketProducts.empty or basketProducts==null}">
         <td colspan="2">Aktualnie nie masz nic w koszyku</td>
     </tr>
     <tr th:each="product : ${basketProducts}">

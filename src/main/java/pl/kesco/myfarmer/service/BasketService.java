@@ -7,7 +7,9 @@ import pl.kesco.myfarmer.model.entity.Basket;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +37,10 @@ public class BasketService {
 
     public List<Basket> readAllBasketPositions() {
 
-        final Order lastUserOrder = orderService.findLastOpenOrderOfLoggedUser().stream()
-                .findFirst()
-                .orElseThrow();
+        final Optional<Order> lastUserOrder = orderService.findLastOpenOrderOfLoggedUser().stream()
+                .findFirst();
 
-        return basketRepo.findAllByOrder(lastUserOrder);
+        return lastUserOrder.isPresent() ? basketRepo.findAllByOrder(lastUserOrder.get()) : new ArrayList<>();
 
     }
 
