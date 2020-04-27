@@ -9,6 +9,7 @@ import pl.kesco.myfarmer.persistence.ProductRepository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,11 @@ public class ProductService {
     public List<Product> getAllProducts(){
 
         return productRepo.findAllByOrderByUserIdAsc();
+    }
+
+    public Optional<Product> findById(Long id){
+
+        return productRepo.findById(id);
     }
 
 

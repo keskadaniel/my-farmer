@@ -7,6 +7,8 @@ import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.OrderRepository;
 
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +36,16 @@ public class OrderService {
         return newOrder;
     }
 
+    public Optional<Order> findById(Long orderId){
+
+        return orderRepo.findById(orderId);
+    }
+
+    public List<Order> findLastOrderOfLoggedUser(){
+
+        var user = userService.getLoggedUser();
+
+        return orderRepo.findAllByCustomerIdOrderByDateAsc(user);
+    }
 
 }

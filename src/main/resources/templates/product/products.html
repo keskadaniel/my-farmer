@@ -26,7 +26,7 @@
         <td><span th:text="${product.quantity}"> ilość </span></td>
         <td><span th:text="${product.price}"> cena </span> PLN </td>
         <td>
-            <form method="POST" th:object="${ordered}" th:action="@{/products/buy}">
+            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
                 <button type="submit" name="submit" class="link-button">Kupuję!</button>
             </form>
         </td>
