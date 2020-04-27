@@ -27,7 +27,7 @@ public class UserController {
     public String userAccount(){
 
         //TODO account with ID
-        return "user/account";
+        return "basket";
     }
 
     @GetMapping("/new")

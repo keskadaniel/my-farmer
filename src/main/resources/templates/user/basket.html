@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Mój koszyk</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th> Id pozycji </th>
+        <th> Nazwa produktu </th>
+        <th> Ilość </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${basketProducts.empty}">
+        <td colspan="2">Aktualnie nie masz nic w koszyku</td>
+    </tr>
+    <tr th:each="product : ${basketProducts}">
+        <td><span th:text="${product.id}"> nazwa </span></td>
+        <td><span th:text="${product.product.name}"> opis </span></td>
+        <td><span th:text="${product.quantity}"> ilość </span></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

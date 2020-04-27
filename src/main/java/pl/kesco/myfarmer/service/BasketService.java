@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Basket;
+import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +16,7 @@ public class BasketService {
 
     private final BasketRepository basketRepo;
     private final OrderService orderService;
+    private final UserService userService;
 
     public Basket add(Basket basket) {
 
@@ -28,5 +32,16 @@ public class BasketService {
 
         return newBasketPosition;
     }
+
+    public List<Basket> readAllBasketPositions() {
+
+        final Order lastUserOrder = orderService.findLastOpenOrderOfLoggedUser().stream()
+                .findFirst()
+                .orElseThrow();
+
+        return basketRepo.findAllByOrder(lastUserOrder);
+
+    }
+
 
 }

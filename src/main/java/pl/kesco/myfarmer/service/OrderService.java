@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Order;
+import pl.kesco.myfarmer.model.entity.Product;
+import pl.kesco.myfarmer.persistence.BasketRepository;
 import pl.kesco.myfarmer.persistence.OrderRepository;
 
+import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +20,12 @@ public class OrderService {
 
     private final OrderRepository orderRepo;
     private final UserService userService;
+    private final BasketRepository basketRepo;
+    private final ProductService productService;
 
     public Order create() {
 
-        var user = userService.getLoggedUser();
+        final var user = userService.getLoggedUser();
 
         var newOrder = orderRepo.save(
                 Order
@@ -36,16 +41,38 @@ public class OrderService {
         return newOrder;
     }
 
-    public Optional<Order> findById(Long orderId){
+    public Optional<Order> findById(Long orderId) {
 
         return orderRepo.findById(orderId);
     }
 
-    public List<Order> findLastOpenOrderOfLoggedUser(){
+    public List<Order> findLastOpenOrderOfLoggedUser() {
 
         var user = userService.getLoggedUser();
 
         return orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user);
+    }
+
+    @Transactional
+    public void completeOrder() {
+
+        final var user = userService.getLoggedUser();
+
+        Optional<Order> userOrder = orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user).stream()
+                .findFirst();
+
+        userOrder.ifPresent(order -> orderRepo.save(order
+                .toBuilder()
+                .ordered(true)
+                .build())
+        );
+
+        userOrder.ifPresent(order -> {
+            basketRepo.findAllByOrder(order).stream()
+                    .forEach(basket ->
+                            productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
+        });
+
     }
 
 }
