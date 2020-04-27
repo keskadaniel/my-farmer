@@ -8,9 +8,8 @@ import pl.kesco.myfarmer.model.entity.Product;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductToBasket {
+public class ProductToBasketDto {
 
-    private Long orderId;
     private Long quantity;
 
 

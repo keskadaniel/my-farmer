@@ -6,13 +6,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.CreateProductDto;
-import pl.kesco.myfarmer.model.dto.ProductToBasket;
+import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
 import pl.kesco.myfarmer.model.entity.Basket;
 import pl.kesco.myfarmer.model.entity.Product;
-import pl.kesco.myfarmer.service.OrderService;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.ProductService;
-import pl.kesco.myfarmer.service.UserService;
 
 import javax.validation.Valid;
 
@@ -22,38 +20,38 @@ import javax.validation.Valid;
 public class ProductController {
 
     private final ProductService productService;
-    private final BasketService ordProdService;
-    private final OrderService orderService;
+    private final BasketService basketService;
 
 
     @GetMapping
     public String showAllProducts(final ModelMap model,
-                                  ProductToBasket productToBasket) {
-        productToBasket.setQuantity(21L);
-        model.addAttribute("ordered", productToBasket);
+                                  ProductToBasketDto productToBasketDto) {
+
+        model.addAttribute("ordered", productToBasketDto);
         model.addAttribute("products", productService.getAllProducts());
         return "product/products";
     }
 
-
     @PostMapping("/buy/{id}")
     public ModelAndView addToBasket(@PathVariable("id") Long productId,
-            @Valid @ModelAttribute("ordered") ProductToBasket productToBasket,
+            @Valid @ModelAttribute("ordered") ProductToBasketDto productToBasketDto,
                                     final ModelMap model) {
 
-        var order = orderService.findLastOrderOfLoggedUser().stream()
-                .findFirst()
-                .orElseGet(() -> orderService.create());
 
-        var product = productService.findById(productId)
+        var productToOrder = productService.findById(productId)
                 //TODO throw error
                 .orElseThrow();
 
-        ordProdService.add(Basket
+        final Long productToOrderQuantity = productToBasketDto.getQuantity();
+
+        if( productToOrderQuantity > productToOrder.getQuantity() ){
+            return new ModelAndView("redirect:/oops", model);
+        }
+
+        basketService.add(Basket
                 .builder()
-                .order(order)
-                .product(product)
-                .quantity(1L)
+                .product(productToOrder)
+                .quantity(productToOrderQuantity)
                 .build()
         );
 

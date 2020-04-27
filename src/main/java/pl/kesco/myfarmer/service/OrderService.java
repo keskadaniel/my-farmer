@@ -41,11 +41,11 @@ public class OrderService {
         return orderRepo.findById(orderId);
     }
 
-    public List<Order> findLastOrderOfLoggedUser(){
+    public List<Order> findLastOpenOrderOfLoggedUser(){
 
         var user = userService.getLoggedUser();
 
-        return orderRepo.findAllByCustomerIdOrderByDateAsc(user);
+        return orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user);
     }
 
 }

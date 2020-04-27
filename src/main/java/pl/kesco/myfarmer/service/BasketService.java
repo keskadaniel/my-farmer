@@ -12,11 +12,21 @@ import pl.kesco.myfarmer.persistence.BasketRepository;
 public class BasketService {
 
     private final BasketRepository basketRepo;
+    private final OrderService orderService;
 
-    public Basket add(Basket basket){
+    public Basket add(Basket basket) {
 
-        return basketRepo.save(basket);
+        var order = orderService.findLastOpenOrderOfLoggedUser().stream()
+                .findFirst()
+                .orElseGet(() -> orderService.create());
 
+        var newBasketPosition = basketRepo.save(basket.toBuilder()
+                .order(order)
+                .build());
+
+        log.info("Product with id: {} added to basket! Order id: {}", basket.getProduct().getId(), order.getId());
+
+        return newBasketPosition;
     }
 
 }

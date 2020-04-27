@@ -13,6 +13,7 @@
         <th> Opis </th>
         <th> Ilość </th>
         <th> Cena </th>
+        <th> Ile biorę? </th>
         <th> </th>
     </tr>
     </thead>
@@ -25,11 +26,14 @@
         <td><span th:text="${product.description}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
         <td><span th:text="${product.price}"> cena </span> PLN </td>
+        <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
         <td>
-            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
-                <button type="submit" name="submit" class="link-button">Kupuję!</button>
-            </form>
+            <input type="text" class="form-control" placeholder="ile" th:field="*{quantity}" required>
         </td>
+        <td>
+                <button type="submit" name="submit" class="link-button">Kupuję!</button>
+        </td>
+        </form>
     </tr>
     </tbody>
 </table>
