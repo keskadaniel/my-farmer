@@ -9,9 +9,9 @@
 <table>
     <thead>
     <tr>
-        <th> Id pozycji </th>
-        <th> Nazwa produktu </th>
-        <th> Ilość </th>
+        <th> Id pozycji</th>
+        <th> Nazwa produktu</th>
+        <th> Ilość</th>
 
     </tr>
     </thead>
@@ -24,6 +24,14 @@
         <td><span th:text="${product.product.name}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
     </tr>
+
+    <form method="POST" th:action="@{/basket}">
+
+        <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
+
+    </form>
+
+
     </tbody>
 </table>
 

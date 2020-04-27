@@ -56,7 +56,15 @@ public class ProductService {
 
                     productRepo.save(Product
                             .builder()
+                            .id(prod.getId())
+                            .name(prod.getName())
+                            .description(prod.getDescription())
+                            .unit(prod.getUnit())
+                            .userId(prod.getUserId())
+                            .price(prod.getPrice())
+                            .createDate(prod.getCreateDate())
                             .quantity(updatedQuantity)
+                            .deleted(false)
                             .build());
                 });
     }
