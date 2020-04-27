@@ -18,7 +18,6 @@ public class BasketService {
 
     private final BasketRepository basketRepo;
     private final OrderService orderService;
-    private final UserService userService;
 
     public Basket add(Basket basket) {
 
@@ -26,6 +25,7 @@ public class BasketService {
                 .findFirst()
                 .orElseGet(() -> orderService.create());
 
+        //TODO use services instead of repo
         var newBasketPosition = basketRepo.save(basket.toBuilder()
                 .order(order)
                 .build());
