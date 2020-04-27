@@ -3,8 +3,7 @@ package pl.kesco.myfarmer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Getter
@@ -12,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "ordered_products")
-public class OrderedProducts {
+@Table(name = "baskets")
+public class Basket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +20,11 @@ public class OrderedProducts {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order orderId;
+    private Order order;
 
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Product> productId = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name="product_id")
+    private Product product;
 
     private Long quantity;
 
