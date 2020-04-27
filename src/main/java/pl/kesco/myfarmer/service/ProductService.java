@@ -52,20 +52,13 @@ public class ProductService {
 
         //TODO beware of changing stante of quantoty in db, check it
         productFromDatabase.ifPresent(prod -> {
-                    Long updatedQuantity = prod.getQuantity() - quantity;
+            Long updatedQuantity = prod.getQuantity() - quantity;
 
-                    productRepo.save(Product
-                            .builder()
-                            .id(prod.getId())
-                            .name(prod.getName())
-                            .description(prod.getDescription())
-                            .unit(prod.getUnit())
-                            .userId(prod.getUserId())
-                            .price(prod.getPrice())
-                            .createDate(prod.getCreateDate())
-                            .quantity(updatedQuantity)
-                            .deleted(false)
-                            .build());
-                });
+            productRepo.save(prod
+                    .toBuilder()
+                    .quantity(updatedQuantity)
+                    .build());
+
+        });
     }
 }

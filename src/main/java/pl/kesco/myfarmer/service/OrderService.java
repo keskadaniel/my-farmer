@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Order;
-import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 import pl.kesco.myfarmer.persistence.OrderRepository;
 
