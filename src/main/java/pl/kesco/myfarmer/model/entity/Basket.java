@@ -28,4 +28,9 @@ public class Basket {
 
     private Long quantity;
 
+    @Transient
+    public Double countPrice(){
+        return product.getPrice() * quantity;
+    }
+
 }
