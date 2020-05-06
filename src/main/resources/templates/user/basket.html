@@ -25,11 +25,15 @@
         <td><span th:text="${product.id}"> nazwa </span></td>
         <td><span th:text="${product.product.name}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.countPrice()}"> cena </span></td>
+        <td><span th:text="${product.countProductPrice()}"> cena </span></td>
     </tr>
     <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>
-            <span th:text="${totalPrice}"> cena </span>
+            <span th:text="${totalPrice}"> cena </span> PLN
         </td>
     </tr>
 

@@ -20,20 +20,29 @@ public class BasketService {
     private final BasketRepository basketRepo;
     private final OrderService orderService;
 
-    public Basket add(Basket basket) {
+    public void add(Basket basket) {
 
         var order = orderService.findLastOpenOrderOfLoggedUser().stream()
                 .findFirst()
                 .orElseGet(() -> orderService.create());
 
         //TODO use services instead of repo
-        var newBasketPosition = basketRepo.save(basket.toBuilder()
-                .order(order)
-                .build());
+
+        basketRepo.findAllByOrder(order).stream()
+                .filter(b -> b.getProduct().equals(basket.getProduct()))
+                .findFirst()
+                .ifPresentOrElse(
+                        basketPosition -> basketRepo.save(basketPosition.toBuilder()
+                                .quantity(basketPosition.getQuantity() + basket.getQuantity())
+                                .build()),
+                        () -> basketRepo.save(basket.toBuilder()
+                                .order(order)
+                                .build())
+
+                );
 
         log.info("Product with id: {} added to basket! Order id: {}", basket.getProduct().getId(), order.getId());
 
-        return newBasketPosition;
     }
 
     public List<Basket> readAllBasketPositions() {
@@ -49,7 +58,7 @@ public class BasketService {
         final Optional<Order> lastUserOrder = findLastUserOrder();
 
         return lastUserOrder.isPresent() ? basketRepo.findAllByOrder(lastUserOrder.get()).stream()
-                .map(p -> p.countPrice())
+                .map(p -> p.countProductPrice())
                 .collect(Collectors.summingDouble(Double::doubleValue))
                 : 0D;
 

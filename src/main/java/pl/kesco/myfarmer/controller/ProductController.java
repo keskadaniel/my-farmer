@@ -34,7 +34,7 @@ public class ProductController {
 
     @PostMapping("/buy/{id}")
     public ModelAndView addToBasket(@PathVariable("id") Long productId,
-            @Valid @ModelAttribute("ordered") ProductToBasketDto productToBasketDto,
+                                    @Valid @ModelAttribute("ordered") ProductToBasketDto productToBasketDto,
                                     final ModelMap model) {
 
 
@@ -44,12 +44,11 @@ public class ProductController {
 
         final Long productToOrderQuantity = productToBasketDto.getQuantity();
 
-        if( productToOrderQuantity > productToOrder.getQuantity() || productToOrderQuantity <= 0){
+        if (productToOrderQuantity > productToOrder.getQuantity() || productToOrderQuantity <= 0) {
             return new ModelAndView("redirect:/oops", model);
         }
 
-        basketService.add(Basket
-                .builder()
+        basketService.add(Basket.builder()
                 .product(productToOrder)
                 .quantity(productToOrderQuantity)
                 .build()
