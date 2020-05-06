@@ -24,6 +24,7 @@ public class BasketController {
     public String showUserBasket(final ModelMap model) {
 
         model.addAttribute("basketProducts", basketService.readAllBasketPositions());
+        model.addAttribute("totalPrice", basketService.getTotalPrice());
         return "user/basket";
     }
 

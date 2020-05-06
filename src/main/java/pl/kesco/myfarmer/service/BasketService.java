@@ -10,6 +10,7 @@ import pl.kesco.myfarmer.persistence.BasketRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +38,26 @@ public class BasketService {
 
     public List<Basket> readAllBasketPositions() {
 
-        final Optional<Order> lastUserOrder = orderService.findLastOpenOrderOfLoggedUser().stream()
-                .findFirst();
+        final Optional<Order> lastUserOrder = findLastUserOrder();
 
         return lastUserOrder.isPresent() ? basketRepo.findAllByOrder(lastUserOrder.get()) : new ArrayList<>();
 
+    }
+
+    public Double getTotalPrice() {
+
+        final Optional<Order> lastUserOrder = findLastUserOrder();
+
+        return lastUserOrder.isPresent() ? basketRepo.findAllByOrder(lastUserOrder.get()).stream()
+                .map(p -> p.countPrice())
+                .collect(Collectors.summingDouble(Double::doubleValue))
+                : 0D;
+
+    }
+
+    private Optional<Order> findLastUserOrder() {
+        return orderService.findLastOpenOrderOfLoggedUser().stream()
+                .findFirst();
     }
 
 

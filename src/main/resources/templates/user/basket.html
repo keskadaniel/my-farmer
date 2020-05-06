@@ -13,6 +13,7 @@
         <th> Nazwa produktu</th>
         <th> Ilość</th>
         <th> Cena razem</th>
+        <th> Suma koszyka</th>
 
     </tr>
     </thead>
@@ -26,6 +27,12 @@
         <td><span th:text="${product.quantity}"> ilość </span></td>
         <td><span th:text="${product.countPrice()}"> cena </span></td>
     </tr>
+    <tr>
+        <td>
+            <span th:text="${totalPrice}"> cena </span>
+        </td>
+    </tr>
+
     <div th:if="${not basketProducts.empty}">
         <form method="POST" th:action="@{/basket}">
 
