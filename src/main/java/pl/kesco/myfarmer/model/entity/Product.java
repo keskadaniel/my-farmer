@@ -11,6 +11,8 @@ import java.time.ZonedDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Builder(toBuilder = true)
 @Table(name = "products")
 public class Product {
