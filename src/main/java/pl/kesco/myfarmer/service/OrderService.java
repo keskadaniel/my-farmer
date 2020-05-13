@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 import pl.kesco.myfarmer.persistence.OrderRepository;
+import pl.kesco.myfarmer.service.mail.EmailService;
 
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
@@ -21,6 +22,7 @@ public class OrderService {
     private final UserService userService;
     private final BasketRepository basketRepo;
     private final ProductService productService;
+    private final EmailService emailService;
 
     public Order create() {
 
@@ -71,6 +73,8 @@ public class OrderService {
                     .forEach(basket ->
                             productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
         });
+
+        emailService.sendMessage("keskadaniel@gmail.com", "Hello mail", "Nowe zamówienie!");
 
     }
 
