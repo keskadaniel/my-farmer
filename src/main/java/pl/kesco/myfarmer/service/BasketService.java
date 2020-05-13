@@ -3,7 +3,7 @@ package pl.kesco.myfarmer.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.kesco.myfarmer.model.entity.Basket;
+import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 
@@ -20,32 +20,30 @@ public class BasketService {
     private final BasketRepository basketRepo;
     private final OrderService orderService;
 
-    public void add(Basket basket) {
+    public void add(BasketPosition basketPosition) {
 
         var order = orderService.findLastOpenOrderOfLoggedUser().stream()
                 .findFirst()
                 .orElseGet(() -> orderService.create());
 
-        //TODO use services instead of repo
-
         basketRepo.findAllByOrder(order).stream()
-                .filter(b -> b.getProduct().equals(basket.getProduct()))
+                .filter(b -> b.getProduct().equals(basketPosition.getProduct()))
                 .findFirst()
                 .ifPresentOrElse(
-                        basketPosition -> basketRepo.save(basketPosition.toBuilder()
-                                .quantity(basketPosition.getQuantity() + basket.getQuantity())
+                        basketItem -> basketRepo.save(basketItem.toBuilder()
+                                .quantity(basketItem.getQuantity() + basketPosition.getQuantity())
                                 .build()),
-                        () -> basketRepo.save(basket.toBuilder()
+                        () -> basketRepo.save(basketPosition.toBuilder()
                                 .order(order)
                                 .build())
 
                 );
 
-        log.info("Product with id: {} added to basket! Order id: {}", basket.getProduct().getId(), order.getId());
+        log.info("Product with id: {} added to basket! Order id: {}", basketPosition.getProduct().getId(), order.getId());
 
     }
 
-    public List<Basket> readAllBasketPositions() {
+    public List<BasketPosition> readAllBasketPositions() {
 
         final Optional<Order> lastUserOrder = findLastUserOrder();
 

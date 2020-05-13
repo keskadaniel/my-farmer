@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.CreateProductDto;
 import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
-import pl.kesco.myfarmer.model.entity.Basket;
+import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.ProductService;
@@ -48,7 +48,7 @@ public class ProductController {
             return new ModelAndView("redirect:/oops", model);
         }
 
-        basketService.add(Basket.builder()
+        basketService.add(BasketPosition.builder()
                 .product(productToOrder)
                 .quantity(productToOrderQuantity)
                 .build()
