@@ -23,11 +23,12 @@ public class UserController {
     private final UserService userService;
     private final UtilService utilService;
 
-    @GetMapping("/account")
-    public String userAccount(){
+    @GetMapping("/my-account")
+    public String userAccount(final ModelMap model){
 
-        //TODO account with ID
-        return "basket";
+        model.addAttribute("user", userService.getLoggedUser());
+
+        return "user/my-account";
     }
 
     @GetMapping("/new")
