@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService {
 
         emailSender.send(message);
 
-        log.info("Email sended to {}", to);
+        log.info("Email sent to {}", to);
 
     }
 }

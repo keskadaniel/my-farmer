@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Order;
+import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 import pl.kesco.myfarmer.persistence.OrderRepository;
 import pl.kesco.myfarmer.service.mail.EmailService;
@@ -68,16 +69,23 @@ public class OrderService {
                 .build())
         );
 
+        //TODO validate if products are still in stock
+
         userOrder.ifPresent(order -> {
             basketRepo.findAllByOrder(order).stream()
                     .forEach(basket ->
                             productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
         });
 
+        sendEmailToCustomer(user, userOrder);
+
+    }
+
+    private void sendEmailToCustomer(User user, Optional<Order> userOrder) {
+
         final String content = "Twoje zamówienie o numerze "+ userOrder.get().getId() + " zostało wysłane do Rolnika!";
 
         emailService.sendMessage(user.getEmail(), "Realizacja zamówienia", content);
-
     }
 
 }
