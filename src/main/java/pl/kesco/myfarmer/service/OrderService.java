@@ -74,7 +74,9 @@ public class OrderService {
                             productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
         });
 
-        emailService.sendMessage("keskadaniel@gmail.com", "Hello mail", "Nowe zamówienie!");
+        final String content = "Twoje zamówienie o numerze "+ userOrder.get().getId() + " zostało wysłane do Rolnika!";
+
+        emailService.sendMessage(user.getEmail(), "Realizacja zamówienia", content);
 
     }
 
