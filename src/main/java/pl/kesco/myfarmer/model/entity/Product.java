@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -33,7 +34,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    @NotBlank(message = "Podaj jaką ilość chcesz sprzedać")
+    @NotNull(message = "Podaj jaką ilość chcesz sprzedać")
     private Long quantity;
 
     @ManyToOne

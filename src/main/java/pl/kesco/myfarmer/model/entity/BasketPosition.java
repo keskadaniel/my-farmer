@@ -29,7 +29,6 @@ public class BasketPosition {
     @JoinColumn(name="product_id")
     private Product product;
 
-    @NotEmpty
     private Long quantity;
 
     @Transient
