@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.CreateProductDto;
+import pl.kesco.myfarmer.model.dto.EditProductDto;
 import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
 import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Product;
@@ -13,6 +14,7 @@ import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.ProductService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("products")
@@ -83,6 +85,58 @@ public class ProductController {
         );
 
         return new ModelAndView("redirect:/", model);
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showProductToEdit(@PathVariable("id") Long productId,
+                                    final ModelMap model,
+                                    EditProductDto editProduct) {
+
+        Optional<Product> productToEdit = productService.findById(productId);
+
+        if (productToEdit.isEmpty()) {
+
+            model.addAttribute("product", editProduct);
+
+            return "redirect:/products/new";
+        }
+
+        productToEdit.ifPresent(
+                product -> {
+                    editProduct.setDescription(product.getDescription());
+                    editProduct.setName(product.getName());
+                    editProduct.setPrice(product.getPrice());
+                    editProduct.setQuantity(product.getQuantity());
+                    editProduct.setUnit(product.getUnit());
+                }
+        );
+
+        model.addAttribute("product", editProduct);
+
+        return "product/edit-product";
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editProduct(@Valid @ModelAttribute("product") EditProductDto editProduct,
+                                    @PathVariable("id") Long productId,
+                                    final ModelMap model) {
+
+        productService.update(productId, Product.builder()
+                .name(editProduct.getName())
+                .description(editProduct.getDescription())
+                .unit(editProduct.getUnit())
+                .quantity(editProduct.getQuantity())
+                .price(editProduct.getPrice())
+                .build());
+
+        return new ModelAndView("redirect:/users/products", model);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public void deleteProduct(@PathVariable("id") Long productId){
+
+        productService.hardDelete(productId);
+
     }
 
 

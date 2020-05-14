@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.persistence.ProductRepository;
 
@@ -33,6 +34,26 @@ public class ProductService {
         log.info("Created product: {}, with id: {}", newProduct.getName(), newProduct.getId());
 
         return newProduct;
+    }
+
+    @Transactional
+    public void update(Long productId, Product product) {
+
+        productRepo.findById(productId)
+                .filter(product1 -> !product1.isDeleted())
+                .map(productToUpdate -> productToUpdate.toBuilder()
+                        .price(product.getPrice())
+                        .unit(product.getUnit())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .quantity(product.getQuantity())
+                        .build())
+                .ifPresent(productRepo::save);
+    }
+
+    public void hardDelete(Long id) {
+        productRepo.findById(id)
+                .ifPresent(product -> productRepo.delete(product));
     }
 
 

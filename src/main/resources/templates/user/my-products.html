@@ -9,11 +9,11 @@
 <table>
     <thead>
     <tr>
-        <th> Nazwa </th>
-        <th> Opis </th>
-        <th> Ilość </th>
-        <th> Cena </th>
-        <th> </th>
+        <th> Nazwa</th>
+        <th> Opis</th>
+        <th> Ilość</th>
+        <th> Cena</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -24,7 +24,18 @@
         <td><span th:text="${product.name}"> nazwa </span></td>
         <td><span th:text="${product.description}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.price}"> cena </span> PLN </td>
+        <td><span th:text="${product.price}"> cena </span> PLN</td>
+        <td>
+            <a th:href="@{/products/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
+        </td>
+
+        <form method="POST" th:action="@{users/products/delete/}+${product.id}">
+            <td>
+                <button type="submit" name="submit" class="link-button">Usuń</button>
+            </td>
+        </form>
+
+
     </tr>
     </tbody>
 </table>
