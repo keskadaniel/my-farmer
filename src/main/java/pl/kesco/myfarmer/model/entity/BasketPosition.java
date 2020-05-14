@@ -3,6 +3,9 @@ package pl.kesco.myfarmer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -26,6 +29,7 @@ public class BasketPosition {
     @JoinColumn(name="product_id")
     private Product product;
 
+    @NotEmpty
     private Long quantity;
 
     @Transient
