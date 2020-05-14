@@ -2,6 +2,7 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Order;
@@ -58,41 +59,45 @@ public class OrderService {
     }
 
     @Transactional
-    public void completeOrder() {
+    public void completeOrder() throws ResourceDoesNotExistException {
 
+        List<BasketPosition> basketPositions = new ArrayList<>();
         final var user = userService.getLoggedUser();
 
         Optional<Order> userOrder = orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user).stream()
                 .findFirst();
 
-        userOrder.ifPresent(order -> orderRepo.save(order
-                .toBuilder()
-                .ordered(true)
-                .build())
-        );
-
-        //TODO validate if products are still in stock
-
-        List<BasketPosition> basketPositions = new ArrayList<>();
-
-        validateProductsQuantity(basketPositions);
-
         if (userOrder.isPresent()) {
             basketPositions = findAllBasketPositions(userOrder);
         }
 
-        basketPositions
-                .forEach(basket ->
-                        productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
+        boolean allProductsAvailable = validateProductsInStock(basketPositions);
 
-        sendEmailToCustomer(user, userOrder);
-        //assuming we have one Producer
-        sendEmailToProducer(user, basketPositions, userOrder);
+        if (allProductsAvailable) {
 
+            userOrder.ifPresent(order -> orderRepo.save(order
+                    .toBuilder()
+                    .ordered(true)
+                    .build())
+            );
+
+            basketPositions
+                    .forEach(basket ->
+                            productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
+
+            sendEmailToCustomer(user, userOrder);
+            //assuming we have one Producer
+            sendEmailToProducer(user, basketPositions, userOrder);
+        } else throw new ResourceDoesNotExistException("No available products in stock");
     }
 
-    private void validateProductsQuantity(List<BasketPosition> basketPositions) {
+    public boolean validateProductsInStock(List<BasketPosition> basketPositions) {
 
+        long exceededStockOrders = basketPositions.stream()
+                .filter(basketPosition -> basketPosition.getProduct().getQuantity() < basketPosition.getQuantity())
+                .count();
+
+        return exceededStockOrders == 0 ? true : false;
     }
 
 

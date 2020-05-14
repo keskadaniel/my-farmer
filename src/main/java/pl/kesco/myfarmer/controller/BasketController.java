@@ -1,6 +1,7 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,11 @@ public class BasketController {
     @PostMapping
     public ModelAndView completeOrder(){
 
-        orderService.completeOrder();
+        try {
+            orderService.completeOrder();
+        } catch (ResourceDoesNotExistException e) {
+            e.printStackTrace();
+        }
 
         return new ModelAndView("redirect:/basket");
     }
