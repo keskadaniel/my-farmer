@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.AddUserDto;
+import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
 import pl.kesco.myfarmer.model.entity.User;
+import pl.kesco.myfarmer.service.ProductService;
 import pl.kesco.myfarmer.service.UserService;
 import pl.kesco.myfarmer.service.UtilService;
 
@@ -22,6 +24,7 @@ public class UserController {
 
     private final UserService userService;
     private final UtilService utilService;
+    private final ProductService productService;
 
     @GetMapping("/my-account")
     public String userAccount(final ModelMap model){
@@ -58,6 +61,14 @@ public class UserController {
         .build());
 
         return new ModelAndView("redirect:/", model);
+    }
+
+    @GetMapping("/products")
+    public String showAllProducts(final ModelMap model,
+                                  ProductToBasketDto productToBasketDto) {
+
+        model.addAttribute("products", productService.getAllUserProducts());
+        return "user/my-products";
     }
 
     private boolean validateUniqueEmailForAccount(String email) {

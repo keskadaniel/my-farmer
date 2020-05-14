@@ -10,6 +10,7 @@ import pl.kesco.myfarmer.persistence.ProductRepository;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,13 @@ public class ProductService {
         return productRepo.findAllByOrderByUserIdAsc();
     }
 
+    public List<Product> getAllUserProducts() {
+
+        var user = userService.getLoggedUser();
+
+        return productRepo.findAllByUserIdOrderByCreateDate(user);
+    }
+
     public Optional<Product> findById(Long id) {
 
         return productRepo.findById(id);
@@ -50,7 +58,6 @@ public class ProductService {
 
         var productFromDatabase = productRepo.findById(product.getId());
 
-        //TODO beware of changing stante of quantoty in db, check it
         productFromDatabase.ifPresent(prod -> {
             Long updatedQuantity = prod.getQuantity() - quantity;
 
