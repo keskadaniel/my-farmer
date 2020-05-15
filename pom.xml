@@ -88,8 +88,20 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.0.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sangupta</groupId>
+			<artifactId>imgur-client</artifactId>
+			<version>0.2.0</version>
+		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.3.1</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>
