@@ -51,7 +51,7 @@ public class ProductService {
                 .ifPresent(productRepo::save);
     }
 
-    public void hardDelete(Long id) {
+    public void delete(Long id) {
         productRepo.findById(id)
                 .ifPresent(product -> productRepo.delete(product));
     }

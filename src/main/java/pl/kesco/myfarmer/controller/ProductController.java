@@ -132,10 +132,13 @@ public class ProductController {
         return new ModelAndView("redirect:/users/products", model);
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteProduct(@PathVariable("id") Long productId){
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long productId,
+                                      final ModelMap model) {
 
-        productService.hardDelete(productId);
+        productService.delete(productId);
+
+        return "redirect:/users/products";
 
     }
 

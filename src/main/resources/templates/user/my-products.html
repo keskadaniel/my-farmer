@@ -28,13 +28,9 @@
         <td>
             <a th:href="@{/products/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
         </td>
-
-        <form method="POST" th:action="@{users/products/delete/}+${product.id}">
-            <td>
-                <button type="submit" name="submit" class="link-button">Usuń</button>
-            </td>
-        </form>
-
+        <td>
+            <a th:href="@{/products/delete/}+${product.id}" class="btn btn-danger">Usuń</a>
+        </td>
 
     </tr>
     </tbody>
