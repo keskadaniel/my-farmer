@@ -11,12 +11,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RunOnStart {
 
-    private final ImageService imageService;
+    private final ImageServiceImpl imageService;
 
-    @EventListener(ContextRefreshedEvent.class)
+//    @EventListener(ContextRefreshedEvent.class)
     public void someEvent() throws IOException, InterruptedException {
 
-        imageService.uploadImage();
+//        imageService.uploadImage();
 
     }
 }

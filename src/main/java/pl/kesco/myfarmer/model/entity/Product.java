@@ -47,5 +47,8 @@ public class Product {
     @Column(name = "create_date")
     private ZonedDateTime createDate;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
 
 }
