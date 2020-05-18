@@ -1,6 +1,7 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -75,6 +76,7 @@ public class ProductController {
 
 
     @PostMapping
+    @Async
     public ModelAndView createProduct(@Valid @ModelAttribute("product") CreateProductDto productDto,
                                       BindingResult bindingResult,
                                       @RequestParam("file") MultipartFile file,
@@ -85,7 +87,7 @@ public class ProductController {
             return new ModelAndView("product/new-product", model);
         }
 
-//        imageService.uploadImage(file)
+        final String imageUrl = imageService.uploadImage(file);
 
         productService.create(
                 Product
@@ -95,7 +97,7 @@ public class ProductController {
                         .price(productDto.getPrice())
                         .quantity(productDto.getQuantity())
                         .unit(productDto.getUnit())
-                        .imageUrl("test")
+                        .imageUrl(imageUrl)
                         .build()
         );
 

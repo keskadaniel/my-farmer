@@ -49,6 +49,11 @@ public class ImageServiceImpl implements ImageService{
     @Override
     public String uploadImage(MultipartFile file) throws IOException, InterruptedException {
 
+
+        if(file.isEmpty()){
+            return "brak zdjęcia";
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofByteArray(file.getBytes()))
                 .uri(URI.create("https://api.imgur.com/3/upload"))
