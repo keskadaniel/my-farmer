@@ -23,7 +23,8 @@
     </tr>
     <tr th:each="product : ${products.?[quantity > 0]}">
         <td>
-            <img th:src="${product.imageUrl}" height="150" width="150" alt="Brak zdjęcia"/>
+            <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}" height="150" width="150"
+                 alt="Brak zdjęcia"/>
         </td>
         <td><span th:text="${product.name}"> nazwa </span></td>
         <td><span th:text="${product.description}"> opis </span></td>
