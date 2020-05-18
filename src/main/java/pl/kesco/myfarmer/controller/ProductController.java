@@ -3,6 +3,7 @@ package pl.kesco.myfarmer.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,10 +76,16 @@ public class ProductController {
 
     @PostMapping
     public ModelAndView createProduct(@Valid @ModelAttribute("product") CreateProductDto productDto,
+                                      BindingResult bindingResult,
                                       @RequestParam("file") MultipartFile file,
                                       final ModelMap model) throws IOException, InterruptedException {
 
-        final String imageUrl = imageService.uploadImage(file);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", productDto);
+            return new ModelAndView("product/new-product", model);
+        }
+
+//        imageService.uploadImage(file)
 
         productService.create(
                 Product
@@ -88,7 +95,7 @@ public class ProductController {
                         .price(productDto.getPrice())
                         .quantity(productDto.getQuantity())
                         .unit(productDto.getUnit())
-                        .imageUrl(imageUrl)
+                        .imageUrl("test")
                         .build()
         );
 

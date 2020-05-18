@@ -25,25 +25,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Podaj nazwę produktu")
     private String name;
 
-    @NotEmpty(message = "Opisz jak będziesz sprzedawać produkt")
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Unit unit;
 
-    @NotNull(message = "Podaj jaką ilość chcesz sprzedać")
     private Long quantity;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userId;
 
-    @Digits(integer = 3, fraction = 2)
     private Double price;
+
     private boolean deleted;
+
     @Column(name = "create_date")
     private ZonedDateTime createDate;
 

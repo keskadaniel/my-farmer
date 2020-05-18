@@ -10,10 +10,12 @@
     <div class="form-group">
         <label for="exampleInputPassword1">Nazwa</label>
         <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Opisz go</label>
         <input type="text" class="form-control" id="exampleInputEmail1" placeholder="opis" th:field="*{description}">
+        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Name Error</span>
     </div>
     <div class="form-group">
         <label>Jak będziesz sprzedawać?</label>
@@ -26,10 +28,12 @@
     <div class="form-group">
         <label>Ile tego masz?</label>
         <input type="text" class="form-control" id="exampleInputPassword1" placeholder="ilość" th:field="*{quantity}">
+        <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Name Error</span>
     </div>
     <div class="form-group">
         <label>Cena za sztukę, kg lub litr?</label>
         <input type="text" class="form-control" placeholder="cena" th:field="*{price}">
+        <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Name Error</span>
     </div>
     <div class="form-group">
         <label>Foto</label>

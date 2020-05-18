@@ -9,12 +9,13 @@
 <table>
     <thead>
     <tr>
-        <th> Nazwa </th>
-        <th> Opis </th>
-        <th> Ilość </th>
-        <th> Cena </th>
-        <th> Ile biorę? </th>
-        <th> </th>
+        <th></th>
+        <th> Nazwa</th>
+        <th> Opis</th>
+        <th> Ilość</th>
+        <th> Cena</th>
+        <th> Ile biorę?</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -22,17 +23,20 @@
         <td colspan="2">Nieurodzaj, nie mamy nic do zaoferowania</td>
     </tr>
     <tr th:each="product : ${products.?[quantity > 0]}">
+        <td>
+            <img th:src="${product.imageUrl}" height="150" width="150" alt="Brak zdjęcia"/>
+        </td>
         <td><span th:text="${product.name}"> nazwa </span></td>
         <td><span th:text="${product.description}"> opis </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.price}"> cena </span> PLN </td>
+        <td><span th:text="${product.price}"> cena </span> PLN</td>
         <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
-        <td>
-            <input type="text" class="form-control" placeholder="ile" th:field="*{quantity}" required>
-        </td>
-        <td>
+            <td>
+                <input type="text" class="form-control" placeholder="ile" th:field="*{quantity}" required>
+            </td>
+            <td>
                 <button type="submit" name="submit" class="link-button">Kupuję!</button>
-        </td>
+            </td>
         </form>
     </tr>
     </tbody>
