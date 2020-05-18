@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface ImageService {
 
-    void readImage() throws IOException, InterruptedException;
+    void readImage(String imageId) throws IOException, InterruptedException;
     String uploadImage(MultipartFile file) throws IOException, InterruptedException;
 
 }
