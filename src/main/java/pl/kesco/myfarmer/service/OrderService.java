@@ -13,9 +13,8 @@ import pl.kesco.myfarmer.service.mail.EmailService;
 
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +58,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void completeOrder() throws ResourceDoesNotExistException {
+    public Map<String, Object> completeOrder() {
+
+        Map<String, Object> result = new HashMap<>();
+        final String key = "ordered";
 
         List<BasketPosition> basketPositions = new ArrayList<>();
         final var user = userService.getLoggedUser();
@@ -71,7 +73,9 @@ public class OrderService {
             basketPositions = findAllBasketPositions(userOrder);
         }
 
-        boolean allProductsAvailable = validateProductsInStock(basketPositions);
+        List<BasketPosition> productsOutOfStock = validateProductsOutOfStock(basketPositions);
+
+        boolean allProductsAvailable = productsOutOfStock.isEmpty();
 
         if (allProductsAvailable) {
 
@@ -88,16 +92,25 @@ public class OrderService {
             sendEmailToCustomer(user, userOrder);
             //assuming we have one Producer
             sendEmailToProducer(user, basketPositions, userOrder);
-        } else throw new ResourceDoesNotExistException("No available products in stock");
+            log.info("Order No {} was successfully completed and sent to Producer!");
+        } else {
+            log.warn("Some products are out of stock!");
+            result.put(key, false);
+            result.put("products", productsOutOfStock);
+
+            return result;
+        };
+
+        result.put(key, true);
+
+        return result;
     }
 
-    public boolean validateProductsInStock(List<BasketPosition> basketPositions) {
+    public List<BasketPosition> validateProductsOutOfStock(List<BasketPosition> basketPositions) {
 
-        long exceededStockOrders = basketPositions.stream()
+        return basketPositions.stream()
                 .filter(basketPosition -> basketPosition.getProduct().getQuantity() < basketPosition.getQuantity())
-                .count();
-
-        return exceededStockOrders == 0 ? true : false;
+                .collect(Collectors.toList());
     }
 
 

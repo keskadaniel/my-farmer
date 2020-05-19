@@ -1,9 +1,12 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.CreateProductDto;
 import pl.kesco.myfarmer.model.dto.EditProductDto;
@@ -11,9 +14,11 @@ import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
 import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
+import pl.kesco.myfarmer.service.ImageService;
 import pl.kesco.myfarmer.service.ProductService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -23,6 +28,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final BasketService basketService;
+    private final ImageService imageService;
 
 
     @GetMapping
@@ -70,8 +76,18 @@ public class ProductController {
 
 
     @PostMapping
+    @Async
     public ModelAndView createProduct(@Valid @ModelAttribute("product") CreateProductDto productDto,
-                                      final ModelMap model) {
+                                      BindingResult bindingResult,
+                                      @RequestParam("file") MultipartFile file,
+                                      final ModelMap model) throws IOException, InterruptedException {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", productDto);
+            return new ModelAndView("product/new-product", model);
+        }
+
+        final String imageUrl = imageService.uploadImage(file);
 
         productService.create(
                 Product
@@ -81,6 +97,7 @@ public class ProductController {
                         .price(productDto.getPrice())
                         .quantity(productDto.getQuantity())
                         .unit(productDto.getUnit())
+                        .imageUrl(imageUrl)
                         .build()
         );
 
@@ -134,7 +151,7 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long productId,
-                                      final ModelMap model) {
+                                final ModelMap model) {
 
         productService.delete(productId);
 
