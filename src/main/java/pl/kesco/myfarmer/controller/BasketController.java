@@ -74,25 +74,15 @@ public class BasketController {
                                     final ModelMap model,
                                     RedirectAttributes redirectAttributes) {
 
-        if (validateNewQuantityCorrectness(basketPositionId, editBasketDto.getQuantity())) {
-            return new ModelAndView("redirect:/basket/edit/" + basketPositionId, model);
+        if (requiredQntyExceedInStockQnty(basketPositionId, editBasketDto.getQuantity())) {
+            redirectAttributes.addFlashAttribute("message", "Nie mamy tyle na stanie!");
+            return new ModelAndView("redirect:/basket/edit/" + basketPositionId);
         }
 
         basketService.update(basketPositionId, editBasketDto.getQuantity());
 
-        return new ModelAndView("redirect:/basket", model);
+        return new ModelAndView("redirect:/basket");
     }
-
-    private boolean validateNewQuantityCorrectness(Long basketPositionId, Long quantity) {
-
-        long exceedQuantity = basketService.readById(basketPositionId)
-                .filter(basketPosition -> basketPosition.getProduct().getQuantity() < quantity)
-                .stream()
-                .count();
-
-        return exceedQuantity > 0 ? true : false;
-    }
-
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long basketPositionId) {
@@ -101,6 +91,21 @@ public class BasketController {
 
         return "redirect:/basket";
 
+    }
+
+
+    private boolean requiredQntyExceedInStockQnty(Long basketPositionId, Long quantity) {
+
+        if(quantity < 0){
+            return true;
+        }
+
+        long exceedQuantity = basketService.readById(basketPositionId)
+                .filter(basketPosition -> basketPosition.getProduct().getQuantity() < quantity)
+                .stream()
+                .count();
+
+        return exceedQuantity > 0 ? true : false;
     }
 
 }
