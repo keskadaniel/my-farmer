@@ -14,6 +14,8 @@
         <th> Ilość produktu na stanie</th>
         <th> Ilość zamówiona</th>
         <th> Cena razem</th>
+        <th> </th>
+        <th> </th>
         <th> Suma koszyka</th>
 
     </tr>
@@ -28,6 +30,12 @@
         <td><span th:text="${product.product.quantity}"> ilość </span></td>
         <td><span th:text="${product.quantity}"> ilość </span></td>
         <td><span th:text="${product.countProductPrice()}"> cena </span></td>
+        <td>
+            <a th:href="@{/basket/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
+        </td>
+        <td>
+            <a th:href="@{/basket/delete/}+${product.id}" class="btn btn-danger">Usuń</a>
+        </td>
     </tr>
     <tr>
         <td></td>
