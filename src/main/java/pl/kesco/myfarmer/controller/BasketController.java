@@ -8,14 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.kesco.myfarmer.model.dto.EditBasketDto;
-import pl.kesco.myfarmer.model.dto.EditProductDto;
-import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.OrderService;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("basket")
@@ -74,11 +71,26 @@ public class BasketController {
     @PostMapping("/edit/{id}")
     public ModelAndView editProduct(@Valid @ModelAttribute("basket") EditBasketDto editBasketDto,
                                     @PathVariable("id") Long basketPositionId,
-                                    final ModelMap model) {
+                                    final ModelMap model,
+                                    RedirectAttributes redirectAttributes) {
+
+        if (validateNewQuantityCorrectness(basketPositionId, editBasketDto.getQuantity())) {
+            return new ModelAndView("redirect:/basket/edit/" + basketPositionId, model);
+        }
 
         basketService.update(basketPositionId, editBasketDto.getQuantity());
 
         return new ModelAndView("redirect:/basket", model);
+    }
+
+    private boolean validateNewQuantityCorrectness(Long basketPositionId, Long quantity) {
+
+        long exceedQuantity = basketService.readById(basketPositionId)
+                .filter(basketPosition -> basketPosition.getProduct().getQuantity() < quantity)
+                .stream()
+                .count();
+
+        return exceedQuantity > 0 ? true : false;
     }
 
 
