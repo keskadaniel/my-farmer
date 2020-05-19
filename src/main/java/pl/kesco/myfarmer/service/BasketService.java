@@ -7,6 +7,7 @@ import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +66,12 @@ public class BasketService {
     private Optional<Order> findLastUserOrder() {
         return orderService.findLastOpenOrderOfLoggedUser().stream()
                 .findFirst();
+    }
+
+    public Optional<BasketPosition> readById(Long id){
+
+        return basketRepo.findById(id);
+
     }
 
 

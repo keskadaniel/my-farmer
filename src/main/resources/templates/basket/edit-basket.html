@@ -22,17 +22,27 @@
     <tr th:if="${basketProducts.empty}">
         <td colspan="2">Aktualnie nie masz nic w koszyku</td>
     </tr>
-    <tr th:each="product : ${basketProducts}">
-        <td><span th:text="${product.id}"> nazwa </span></td>
-        <td><span th:text="${product.product.name}"> opis </span></td>
-        <td><span th:text="${product.product.quantity}"> ilość </span></td>
-        <td>
-            <span th:if="${product.id != id}" th:text="${product.quantity}"> ilość </span>
-            <span th:unless="${product.id == id}"><input type="text" class="form-control" id="id" placeholder="ilość" th:field="*{quantity}"></span>
-        </td>
 
-        <td><span th:text="${product.countProductPrice()}"> cena </span></td>
-    </tr>
+    <form action="#" th:action="@{/basket/edit/}+${id}" th:object="${basket}" method="post">
+
+        <tr th:each="product : ${basketProducts}">
+            <td><span th:text="${product.id}"> nazwa </span></td>
+            <td><span th:text="${product.product.name}"> opis </span></td>
+            <td><span th:text="${product.product.quantity}"> ilość </span></td>
+            <td>
+                <span th:if="${product.id != id}" th:text="${product.quantity}"> ilość </span>
+                <span th:unless="${product.id == id}"><input type="text" class="form-control" id="id"
+                                                             placeholder="ilość" th:field="*{quantity}"></span>
+            </td>
+
+            <td><span th:text="${product.countProductPrice()}"> cena </span></td>
+            <td th:if="${product.id == id}">
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </td>
+        </tr>
+    </form>
+
+
     <tr>
         <td></td>
         <td></td>
