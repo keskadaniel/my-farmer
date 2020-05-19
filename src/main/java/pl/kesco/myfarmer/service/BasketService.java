@@ -63,6 +63,17 @@ public class BasketService {
 
     }
 
+    public void update(Long id, Long quantity){
+
+        basketRepo.findById(id)
+                .map(basketPosition -> basketPosition.toBuilder()
+                .quantity(quantity)
+                .build())
+                .ifPresent(basketRepo::save);
+
+        log.info("Position no {} was updated in your basket! New Quantity: {}", id, quantity);
+    }
+
     private Optional<Order> findLastUserOrder() {
         return orderService.findLastOpenOrderOfLoggedUser().stream()
                 .findFirst();
@@ -74,5 +85,11 @@ public class BasketService {
 
     }
 
+    public void delete(Long basketPositionId) {
 
+        basketRepo.findById(basketPositionId)
+                .ifPresent(basketPosition -> basketRepo.delete(basketPosition));
+
+        log.info("Position no {} was deleted from your basket!", basketPositionId);
+    }
 }

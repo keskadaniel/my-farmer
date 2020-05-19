@@ -31,13 +31,16 @@
             <td><span th:text="${product.product.quantity}"> ilość </span></td>
             <td>
                 <span th:if="${product.id != id}" th:text="${product.quantity}"> ilość </span>
-                <span th:unless="${product.id == id}"><input type="text" class="form-control" id="id"
+                <span th:if="${product.id == id}"><input type="text" class="form-control" id="id"
                                                              placeholder="ilość" th:field="*{quantity}"></span>
             </td>
 
             <td><span th:text="${product.countProductPrice()}"> cena </span></td>
             <td th:if="${product.id == id}">
                 <button type="submit" class="btn btn-primary">Zapisz</button>
+            </td>
+            <td th:if="${product.id == id}">
+                <a th:href="@{/basket}"><span class="material-icons">Anuluj</span></a>
             </td>
         </tr>
     </form>
@@ -51,31 +54,6 @@
         <td>
             <span th:text="${totalPrice}"> cena </span> PLN
         </td>
-    </tr>
-    </tbody>
-</table>
-
-<div th:if="${not basketProducts.empty}">
-    <form method="POST" th:action="@{/basket}">
-        <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
-    </form>
-</div>
-
-<p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-
-<table th:if="${absent ne null}">
-    <thead>
-    <tr>
-        <th> Nazwa produktu</th>
-        <th> Ilość produktu na stanie</th>
-        <th> Ilość zamówiona</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="ordered : ${absent}">
-        <td><span th:text="${ordered.product.name}"> nazwa </span></td>
-        <td><span th:text="${ordered.product.quantity}"> ilość </span></td>
-        <td><span th:text="${ordered.quantity}"> ilość </span></td>
     </tr>
     </tbody>
 </table>

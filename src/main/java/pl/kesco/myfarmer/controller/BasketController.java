@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.kesco.myfarmer.model.dto.EditBasketDto;
@@ -16,6 +13,7 @@ import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.OrderService;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
@@ -72,5 +70,25 @@ public class BasketController {
         return "basket/edit-basket";
     }
 
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editProduct(@Valid @ModelAttribute("basket") EditBasketDto editBasketDto,
+                                    @PathVariable("id") Long basketPositionId,
+                                    final ModelMap model) {
+
+        basketService.update(basketPositionId, editBasketDto.getQuantity());
+
+        return new ModelAndView("redirect:/basket", model);
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long basketPositionId) {
+
+        basketService.delete(basketPositionId);
+
+        return "redirect:/basket";
+
+    }
 
 }
