@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Mój koszyk</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th> Id pozycji</th>
+        <th> Nazwa produktu</th>
+        <th> Ilość produktu na stanie</th>
+        <th> Ilość zamówiona</th>
+        <th> Cena razem</th>
+        <th> Suma koszyka</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${basketProducts.empty}">
+        <td colspan="2">Aktualnie nie masz nic w koszyku</td>
+    </tr>
+
+    <form action="#" th:action="@{/basket/edit/}+${id}" th:object="${basket}" method="post">
+
+        <tr th:each="product : ${basketProducts}">
+            <td><span th:text="${product.id}"> nazwa </span></td>
+            <td><span th:text="${product.product.name}"> opis </span></td>
+            <td><span th:text="${product.product.quantity}"> ilość </span></td>
+            <td>
+                <span th:if="${product.id != id}" th:text="${product.quantity}"> ilość </span>
+                <span th:if="${product.id == id}">
+                    <input type="text" class="form-control" id="id-basket" placeholder="ilość" th:field="*{quantity}">
+                </span>
+            </td>
+
+            <td><span th:text="${product.countProductPrice()}"> cena </span></td>
+            <td th:if="${product.id == id}">
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </td>
+            <td th:if="${product.id == id}">
+                <a th:href="@{/basket}"><span class="material-icons">Anuluj</span></a>
+            </td>
+        </tr>
+    </form>
+
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <span th:text="${totalPrice}"> cena </span> PLN
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+
+</body>
+</html>

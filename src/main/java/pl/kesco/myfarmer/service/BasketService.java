@@ -7,6 +7,7 @@ import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.persistence.BasketRepository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +63,33 @@ public class BasketService {
 
     }
 
+    public void update(Long id, Long quantity){
+
+        basketRepo.findById(id)
+                .map(basketPosition -> basketPosition.toBuilder()
+                .quantity(quantity)
+                .build())
+                .ifPresent(basketRepo::save);
+
+        log.info("Position no {} was updated in your basket! New Quantity: {}", id, quantity);
+    }
+
     private Optional<Order> findLastUserOrder() {
         return orderService.findLastOpenOrderOfLoggedUser().stream()
                 .findFirst();
     }
 
+    public Optional<BasketPosition> readById(Long id){
 
+        return basketRepo.findById(id);
+
+    }
+
+    public void delete(Long basketPositionId) {
+
+        basketRepo.findById(basketPositionId)
+                .ifPresent(basketPosition -> basketRepo.delete(basketPosition));
+
+        log.info("Position no {} was deleted from your basket!", basketPositionId);
+    }
 }

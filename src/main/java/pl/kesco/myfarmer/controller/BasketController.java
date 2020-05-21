@@ -2,23 +2,16 @@ package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.maven.wagon.ResourceDoesNotExistException;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
-import pl.kesco.myfarmer.model.entity.BasketPosition;
-import pl.kesco.myfarmer.model.entity.Order;
+import pl.kesco.myfarmer.model.dto.EditBasketDto;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.OrderService;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -38,7 +31,7 @@ public class BasketController {
         model.addAttribute("status", true);
 
 
-        return "user/basket";
+        return "basket/basket";
     }
 
     @PostMapping
@@ -55,5 +48,64 @@ public class BasketController {
         return new ModelAndView("redirect:/basket");
     }
 
+    @GetMapping("/edit/{id}")
+    public String showBasketToEdit(@PathVariable("id") Long productId,
+                                   final ModelMap model,
+                                   EditBasketDto editBasketDto) {
+
+
+        model.addAttribute("basketProducts", basketService.readAllBasketPositions());
+        model.addAttribute("id", productId);
+
+        basketService.readById(productId).ifPresent(
+                basketPosition -> {
+                    editBasketDto.setQuantity(basketPosition.getQuantity());
+                    model.addAttribute("basket", editBasketDto);
+                }
+        );
+
+        return "basket/edit-basket";
+    }
+
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editProduct(@Valid @ModelAttribute("basket") EditBasketDto editBasketDto,
+                                    @PathVariable("id") Long basketPositionId,
+                                    final ModelMap model,
+                                    RedirectAttributes redirectAttributes) {
+
+        if (requiredQntyExceedInStockQnty(basketPositionId, editBasketDto.getQuantity())) {
+            redirectAttributes.addFlashAttribute("message", "Nie mamy tyle na stanie!");
+            return new ModelAndView("redirect:/basket/edit/" + basketPositionId);
+        }
+
+        basketService.update(basketPositionId, editBasketDto.getQuantity());
+
+        return new ModelAndView("redirect:/basket");
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long basketPositionId) {
+
+        basketService.delete(basketPositionId);
+
+        return "redirect:/basket";
+
+    }
+
+
+    private boolean requiredQntyExceedInStockQnty(Long basketPositionId, Long quantity) {
+
+        if(quantity < 0){
+            return true;
+        }
+
+        long exceedQuantity = basketService.readById(basketPositionId)
+                .filter(basketPosition -> basketPosition.getProduct().getQuantity() < quantity)
+                .stream()
+                .count();
+
+        return exceedQuantity > 0 ? true : false;
+    }
 
 }
