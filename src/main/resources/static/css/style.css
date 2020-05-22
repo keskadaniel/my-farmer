@@ -43,6 +43,11 @@ body {
 
 }
 
+.logo{
+    alignment: right;
+    margin-right: 20px;
+}
+
 input,
 textarea {
     border: 1px solid #eeeeee;
