@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Dołóż produkt</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
-
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
 <form action="#" th:action="@{/products}" th:object="${product}" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="exampleInputPassword1">Nazwa</label>
@@ -41,7 +40,8 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
-
+</div>
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>

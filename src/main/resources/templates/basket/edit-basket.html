@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Mój koszyk</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
 
+<div class="container">
 <table>
     <thead>
     <tr>
@@ -60,6 +60,9 @@
 </table>
 
 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+</div>
 
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>
