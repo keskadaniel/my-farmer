@@ -13,6 +13,7 @@ body {
     padding: 20px;
     text-align: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .login {
@@ -48,13 +49,62 @@ body {
     margin-right: 20px;
 }
 
+.product{
+    height: 160px;
+
+}
+
+tr{
+    border-color: grey;
+    border-radius: 5px;
+    width: 100%;
+}
+
+th{
+    text-align: center;
+    height: 40px;
+
+}
+
+
+table{
+    display: inline-block;
+    margin: 0 auto;
+
+}
+
+img {
+    display: block;
+    max-width:230px;
+    max-height:150px;
+    width: auto;
+    height: auto;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+td{
+    min-width: 140px;
+    padding: 5px;
+}
+
+thead{
+    background: lightgray;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
 input,
 textarea {
     border: 1px solid #eeeeee;
     box-sizing: border-box;
     margin: 0;
     outline: none;
-    padding: 10px;
+    padding: 5px;
 }
 
 input[type="button"] {
@@ -92,7 +142,7 @@ input::-webkit-inner-spin-button {
 .input-group .quantity-field {
     position: relative;
     height: 38px;
-    left: -6px;
+    /*left: -6px;*/
     text-align: center;
     width: 62px;
     display: inline-block;

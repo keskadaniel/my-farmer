@@ -21,10 +21,9 @@
         <tr th:if="${products.empty}">
             <td colspan="2">Nieurodzaj, nie mamy nic do zaoferowania</td>
         </tr>
-        <tr th:each="product : ${products.?[quantity > 0]}">
+        <tr th:each="product : ${products.?[quantity > 0]}" class="product">
             <td>
-                <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}" height="150"
-                     width="150"
+                <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
                      alt="Brak zdjęcia"/>
             </td>
             <td><span th:text="${product.name}"> nazwa </span></td>
