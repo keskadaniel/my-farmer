@@ -5,42 +5,46 @@
 <div th:replace="fragments/header :: header">
 </div>
 <div class="container">
-<table>
-    <thead>
-    <tr>
-        <th></th>
-        <th> Nazwa</th>
-        <th> Opis</th>
-        <th> Ilość</th>
-        <th> Cena</th>
-        <th> Ile biorę?</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${products.empty}">
-        <td colspan="2">Nieurodzaj, nie mamy nic do zaoferowania</td>
-    </tr>
-    <tr th:each="product : ${products.?[quantity > 0]}">
-        <td>
-            <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}" height="150" width="150"
-                 alt="Brak zdjęcia"/>
-        </td>
-        <td><span th:text="${product.name}"> nazwa </span></td>
-        <td><span th:text="${product.description}"> opis </span></td>
-        <td><span th:text="${product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.price}"> cena </span> PLN</td>
-        <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th> Nazwa</th>
+            <th> Opis</th>
+            <th> Ilość</th>
+            <th> Cena</th>
+            <th> Ile biorę?</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${products.empty}">
+            <td colspan="2">Nieurodzaj, nie mamy nic do zaoferowania</td>
+        </tr>
+        <tr th:each="product : ${products.?[quantity > 0]}">
             <td>
-                <input type="text" class="form-control" placeholder="ile" th:field="*{quantity}" required>
+                <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}" height="150"
+                     width="150"
+                     alt="Brak zdjęcia"/>
             </td>
-            <td>
-                <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
-            </td>
-        </form>
-    </tr>
-    </tbody>
-</table>
+            <td><span th:text="${product.name}"> nazwa </span></td>
+            <td><span th:text="${product.description}"> opis </span></td>
+            <td><span th:text="${product.quantity}"> ilość </span></td>
+            <td><span th:text="${product.price}"> cena </span> PLN</td>
+            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
+                <td>
+                    <div class="input-group">
+                        <input type="number" step="1" min="1" max="" value="1" name="quantity" class="quantity-field"
+                               th:field="*{quantity}" required>
+                    </div>
+                </td>
+                <td>
+                    <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script>
 
@@ -55,10 +59,44 @@
 
     }
 
-    document.getElementsByTagName('a').addEventListener('click', function() {
+    document.getElementsByTagName('a').addEventListener('click', function () {
         alert('Hello world');
     }, false);
 
+
+    function incrementValue(e) {
+        e.preventDefault();
+        var fieldName = $(e.target).data('field');
+        var parent = $(e.target).closest('div');
+        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+        if (!isNaN(currentVal)) {
+            parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
+        } else {
+            parent.find('input[name=' + fieldName + ']').val(0);
+        }
+    }
+
+    function decrementValue(e) {
+        e.preventDefault();
+        var fieldName = $(e.target).data('field');
+        var parent = $(e.target).closest('div');
+        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+        if (!isNaN(currentVal) && currentVal > 0) {
+            parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
+        } else {
+            parent.find('input[name=' + fieldName + ']').val(0);
+        }
+    }
+
+    $('.input-group').on('click', '.button-plus', function (e) {
+        incrementValue(e);
+    });
+
+    $('.input-group').on('click', '.button-minus', function (e) {
+        decrementValue(e);
+    });
 </script>
 
 
