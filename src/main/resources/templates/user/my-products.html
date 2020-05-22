@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Stragany</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
 
 <table>
     <thead>
@@ -37,6 +36,7 @@
 </table>
 
 <a th:href="'/products/new'"><span class="material-icons">Dodaj nowy produkt</span></a>
-
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>

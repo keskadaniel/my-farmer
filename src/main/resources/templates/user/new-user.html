@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Create User</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
 
 <form action="#" th:action="@{/users}" th:object="${user}" method="post">
     <div class="form-group">
@@ -27,6 +26,7 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>

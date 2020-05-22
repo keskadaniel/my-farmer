@@ -1,0 +1,49 @@
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+
+    <title>Kęski</title>
+
+</head>
+<body>
+
+<ul class="nav nav-tabs" th:fragment="header">
+    <li class="nav">
+        <a class="nav-link active" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/products'">Produkty</a>
+    </li>
+    <li class="nav">
+        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/basket'">Koszyk</a>
+    </li>
+    <li class="nav">
+        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/my-account'">Moje konto</a>
+    </li>
+    <li class="nav">
+        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/products'">Sprzedaję</a>
+    </li>
+    <li class="nav">
+        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/logout'">Wyloguj</a>
+    </li>
+</ul>
+
+<script>
+
+    function changeActive(elem) {
+        var a = document.getElementsByTagName('a');
+        for (i = 0; i < a.length; i++) {
+            a[i].classList.remove('active')
+        }
+        elem.classList.add('active');
+    }
+
+    document.getElementsByTagName('a').addEventListener('click', function() {
+        alert('Hello world');
+    }, false);
+
+</script>
+
+</body>
+</html>

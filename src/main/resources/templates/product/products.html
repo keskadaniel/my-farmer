@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Stragany</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
+
 <table>
     <thead>
     <tr>
@@ -42,6 +42,27 @@
     </tbody>
 </table>
 
+<script>
 
+    function changeActive(elem) {
+        console.log("w products")
+
+        var a = document.getElementsByTagName('a');
+        for (i = 0; i < a.length; i++) {
+            a[i].classList.remove('active')
+        }
+        elem.classList.add('active');
+
+    }
+
+    document.getElementsByTagName('a').addEventListener('click', function() {
+        alert('Hello world');
+    }, false);
+
+</script>
+
+
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>

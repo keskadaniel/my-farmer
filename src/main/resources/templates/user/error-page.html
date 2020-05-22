@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Sorry</title>
-</head>
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
 <h1>Ktoś o takim emailu już tu jest!</h1>
 <br>
 <button>
     <a th:href="'/users/new'"><span class="material-icons">Wybierz inny email</span></a>
 </button>
+
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>
