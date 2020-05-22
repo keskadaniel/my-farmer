@@ -5,6 +5,7 @@
 <div th:replace="fragments/header :: header">
 </div>
 
+<div class="container">
 <table>
     <thead>
     <tr>
@@ -59,7 +60,7 @@
 </table>
 
 <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-
+</div>
 
 <div th:replace="fragments/footer :: footer">
 </div>

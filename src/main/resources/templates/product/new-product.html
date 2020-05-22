@@ -4,7 +4,7 @@
 <body>
 <div th:replace="fragments/header :: header">
 </div>
-
+<div class="container">
 <form action="#" th:action="@{/products}" th:object="${product}" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="exampleInputPassword1">Nazwa</label>
@@ -40,7 +40,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
+</div>
 <div th:replace="fragments/footer :: footer">
 </div>
 </body>

@@ -4,12 +4,14 @@
 <body>
 <div th:replace="fragments/header :: header">
 </div>
-<h1>Hello! This is your Farmer!</h1>
-<a th:href="'/users/my-account'"><span class="material-icons">Konto użytkownika</span></a>
-<br>
-<a th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
-<br>
-<a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+<div class="container">
+    <h1>Hello! This is your Farmer!</h1>
+    <a th:href="'/users/my-account'"><span class="material-icons">Konto użytkownika</span></a>
+    <br>
+    <a th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
+    <br>
+    <a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+</div>
 <div th:replace="fragments/footer :: footer">
 </div>
 </body>

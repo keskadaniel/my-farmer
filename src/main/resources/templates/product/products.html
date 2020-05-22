@@ -4,7 +4,7 @@
 <body>
 <div th:replace="fragments/header :: header">
 </div>
-
+<div class="container">
 <table>
     <thead>
     <tr>
@@ -35,13 +35,13 @@
                 <input type="text" class="form-control" placeholder="ile" th:field="*{quantity}" required>
             </td>
             <td>
-                <button type="submit" name="submit" class="link-button">Kupuję!</button>
+                <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
             </td>
         </form>
     </tr>
     </tbody>
 </table>
-
+</div>
 <script>
 
     function changeActive(elem) {

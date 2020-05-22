@@ -4,74 +4,76 @@
 <body>
 <div th:replace="fragments/header :: header">
 </div>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th> Id pozycji</th>
+            <th> Nazwa produktu</th>
+            <th> Ilość produktu na stanie</th>
+            <th> Ilość zamówiona</th>
+            <th> Cena razem</th>
+            <th></th>
+            <th></th>
+            <th> Suma koszyka</th>
 
-<table>
-    <thead>
-    <tr>
-        <th> Id pozycji</th>
-        <th> Nazwa produktu</th>
-        <th> Ilość produktu na stanie</th>
-        <th> Ilość zamówiona</th>
-        <th> Cena razem</th>
-        <th> </th>
-        <th> </th>
-        <th> Suma koszyka</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${basketProducts.empty}">
+            <td colspan="2">Aktualnie nie masz nic w koszyku</td>
+        </tr>
+        <tr th:each="product : ${basketProducts}">
+            <td><span th:text="${product.id}"> nazwa </span></td>
+            <td><span th:text="${product.product.name}"> opis </span></td>
+            <td><span th:text="${product.product.quantity}"> ilość </span></td>
+            <td><span th:text="${product.quantity}"> ilość </span></td>
+            <td><span th:text="${product.countProductPrice()}"> cena </span></td>
+            <td>
+                <a th:href="@{/basket/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
+            </td>
+            <td>
+                <a th:href="@{/basket/delete/}+${product.id}" class="btn btn-danger">Usuń</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <span th:text="${totalPrice}"> cena </span> PLN
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${basketProducts.empty}">
-        <td colspan="2">Aktualnie nie masz nic w koszyku</td>
-    </tr>
-    <tr th:each="product : ${basketProducts}">
-        <td><span th:text="${product.id}"> nazwa </span></td>
-        <td><span th:text="${product.product.name}"> opis </span></td>
-        <td><span th:text="${product.product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.quantity}"> ilość </span></td>
-        <td><span th:text="${product.countProductPrice()}"> cena </span></td>
-        <td>
-            <a th:href="@{/basket/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
-        </td>
-        <td>
-            <a th:href="@{/basket/delete/}+${product.id}" class="btn btn-danger">Usuń</a>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <span th:text="${totalPrice}"> cena </span> PLN
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <div th:if="${not basketProducts.empty}">
+        <form method="POST" th:action="@{/basket}">
+            <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
+        </form>
+    </div>
 
-<div th:if="${not basketProducts.empty}">
-    <form method="POST" th:action="@{/basket}">
-        <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
-    </form>
+    <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+
+    <table th:if="${absent ne null}">
+        <thead>
+        <tr>
+            <th> Nazwa produktu</th>
+            <th> Ilość produktu na stanie</th>
+            <th> Ilość zamówiona</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ordered : ${absent}">
+            <td><span th:text="${ordered.product.name}"> nazwa </span></td>
+            <td><span th:text="${ordered.product.quantity}"> ilość </span></td>
+            <td><span th:text="${ordered.quantity}"> ilość </span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
-<p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-
-<table th:if="${absent ne null}">
-    <thead>
-    <tr>
-        <th> Nazwa produktu</th>
-        <th> Ilość produktu na stanie</th>
-        <th> Ilość zamówiona</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="ordered : ${absent}">
-        <td><span th:text="${ordered.product.name}"> nazwa </span></td>
-        <td><span th:text="${ordered.product.quantity}"> ilość </span></td>
-        <td><span th:text="${ordered.quantity}"> ilość </span></td>
-    </tr>
-    </tbody>
-</table>
 <script>
 
     function changeActive(elem) {

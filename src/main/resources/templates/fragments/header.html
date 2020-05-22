@@ -10,25 +10,26 @@
 
 </head>
 <body>
-
-<ul class="nav nav-tabs" th:fragment="header">
-    <li class="nav">
-        <a class="nav-link active" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/products'">Produkty</a>
-    </li>
-    <li class="nav">
-        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/basket'">Koszyk</a>
-    </li>
-    <li class="nav">
-        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/my-account'">Moje konto</a>
-    </li>
-    <li class="nav">
-        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/products'">Sprzedaję</a>
-    </li>
-    <li class="nav">
-        <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/logout'">Wyloguj</a>
-    </li>
-</ul>
-
+<div class="header-decor">
+    <ul class="nav nav-tabs" th:fragment="header">
+        <li class="nav">
+            <a class="nav-link active" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/products'">Produkty</a>
+        </li>
+        <li class="nav">
+            <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/basket'">Koszyk</a>
+        </li>
+        <li class="nav">
+            <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/my-account'">Moje
+                konto</a>
+        </li>
+        <li class="nav">
+            <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/users/products'">Sprzedaję</a>
+        </li>
+        <li class="nav">
+            <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/logout'">Wyloguj</a>
+        </li>
+    </ul>
+</div>
 <script>
 
     function changeActive(elem) {
@@ -39,7 +40,7 @@
         elem.classList.add('active');
     }
 
-    document.getElementsByTagName('a').addEventListener('click', function() {
+    document.getElementsByTagName('a').addEventListener('click', function () {
         alert('Hello world');
     }, false);
 
