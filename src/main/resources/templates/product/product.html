@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+
+<!--        <div th:if="${product.empty}">-->
+<!--            <td colspan="2">Nie mamy tego produktu</td>-->
+<!--        </div>-->
+         <td>
+                <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
+                     alt="Brak zdjęcia"/>
+            </td>
+            <td><span th:text="${product.name}"> nazwa </span></td>
+            <td><span th:text="${product.description}"> opis </span></td>
+            <td><span th:text="${product.quantity}"> ilość </span></td>
+            <td><span th:text="${product.price}"> cena </span> PLN</td>
+            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
+                <td>
+                    <div class="input-group">
+                        <input type="number" step="1" min="1" max="" value="1" name="quantity" class="quantity-field"
+                               th:field="*{quantity}" required>
+                    </div>
+                </td>
+                <td>
+                    <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
+                </td>
+            </form>
+        </tr>
+
+</div>
+
+
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>
