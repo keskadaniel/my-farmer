@@ -26,7 +26,11 @@
                 <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
                      alt="Brak zdjęcia"/>
             </td>
-            <td><span th:text="${product.name}"> nazwa </span></td>
+            <td>
+                <a th:href="'/products/'+${product.id}">
+                    <span th:text="${product.name}"> nazwa </span>
+                </a>
+            </td>
             <td><span th:text="${product.description}"> opis </span></td>
             <td><span th:text="${product.quantity}"> ilość </span></td>
             <td><span th:text="${product.price}"> cena </span> PLN</td>
