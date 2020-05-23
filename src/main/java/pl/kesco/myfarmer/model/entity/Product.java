@@ -4,10 +4,6 @@ import lombok.*;
 import pl.kesco.myfarmer.model.Unit;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +46,9 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "product",
+            orphanRemoval = true)
     private List<BasketPosition> basketPositions = new ArrayList<>();
 
 
