@@ -37,6 +37,7 @@ body {
     height: 45px;
     color: #c2dde6;
     font-weight: bold;
+    flex-wrap: nowrap;
 }
 
 .nav {
@@ -45,8 +46,7 @@ body {
 }
 
 .logo{
-    alignment: right;
-    margin-right: 20px;
+    margin: 20px;
 }
 
 .product{

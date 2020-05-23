@@ -10,8 +10,8 @@
 
 </head>
 <body>
-<div class="header-decor">
-    <ul class="nav nav-tabs" th:fragment="header">
+<div>
+    <ul class="nav nav-tabs header-decor" th:fragment="header">
         <li class="nav">
             <a class="nav-link active" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/products'">Produkty</a>
         </li>
@@ -28,8 +28,8 @@
         <li class="nav">
             <a class="nav-link" th:onclick="'changeActive(this);'" data-toggle="tab" th:href="'/logout'">Wyloguj</a>
         </li>
-        <li class="nav logo">
-            <a th:href="'/'">
+        <li class="navbar-nav ml-auto">
+            <a class="logo" th:href="'/'">
                 <img th:src="@{/img/logo.png}" width="150px" height="150px" alt="home"/>
             </a>
         </li>
