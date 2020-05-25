@@ -55,6 +55,13 @@ body {
 
 }
 
+.order-completed{
+    background: #1e7e34;
+}
+.order-waiting{
+    background: #c82333;
+}
+
 tr{
     border-color: grey;
     border-radius: 5px;
