@@ -33,7 +33,7 @@
             </td>
             <td><span th:text="${product.description}"> opis </span></td>
             <td><span th:text="${product.quantity}"> ilość </span></td>
-            <td><span th:text="${product.price}"> cena </span> PLN</td>
+            <td><span th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')}"> cena </span> zł</td>
             <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
                 <td>
                     <div class="input-group">

@@ -66,6 +66,9 @@ th{
 
 }
 
+.input-group{
+    display: block;
+}
 
 table{
     display: inline-block;

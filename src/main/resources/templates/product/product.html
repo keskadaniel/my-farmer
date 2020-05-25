@@ -5,21 +5,33 @@
 <div th:replace="fragments/header :: header">
 </div>
 <div class="container">
-    <div>
-        <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
-             alt="Brak zdjęcia"/>
-    </div>
-    <div><p th:text="${product.name}"> nazwa </p></div>
-    <div><p th:text="${product.description}"> opis </p></div>
-    <div><p th:text="${product.quantity}"> ilość </p></div>
-    <div><p th:text="${product.price}"> cena </p> PLN</div>
-    <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
-        <div class="input-group">
-            <input type="number" step="1" min="1" max="" value="1" name="quantity" class="quantity-field"
-                   th:field="*{quantity}" required>
+    <div class="row">
+        <div class="col">
+            <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
+                 alt="Brak zdjęcia"/>
         </div>
-        <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
-    </form>
+        <div class="col">
+            <h3 th:text="${product.name}"> nazwa </h3>
+            <p th:text="${product.description}"> opis </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <p></p>
+            <p>cena: <span th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')}"> cena </span> zł</p>
+            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
+                <div class="input-group">
+                    <p>
+                        <input type="number" step="1" min="1" max="" value="1" name="quantity" class="quantity-field"
+                               th:field="*{quantity}" required> z dostępnych
+                        <span th:text="${product.quantity}"> ilość </span>
+                    </p>
+                </div>
+                <button type="submit" name="submit" class="btn btn-success">DO KOSZYKA</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 
