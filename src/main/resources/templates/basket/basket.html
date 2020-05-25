@@ -8,50 +8,50 @@
     <table>
         <thead>
         <tr>
-            <th> Id pozycji</th>
-            <th> Nazwa produktu</th>
-            <th> Ilość produktu na stanie</th>
-            <th> Ilość zamówiona</th>
-            <th> Cena razem</th>
+            <th>no.</th>
+            <th>produkt</th>
+            <th>dostępność</th>
+            <th>zamówiona ilość</th>
+            <th>cena razem</th>
             <th></th>
             <th></th>
-            <th> Suma koszyka</th>
-
         </tr>
         </thead>
         <tbody>
         <tr th:if="${basketProducts.empty}">
             <td colspan="2">Aktualnie nie masz nic w koszyku</td>
         </tr>
-        <tr th:each="product : ${basketProducts}">
-            <td><span th:text="${product.id}"> nazwa </span></td>
+        <tr th:each="product,iter : ${basketProducts}">
+            <td><span th:text="${iter.count}"> nazwa </span>.</td>
             <td><span th:text="${product.product.name}"> opis </span></td>
             <td><span th:text="${product.product.quantity}"> ilość </span></td>
             <td><span th:text="${product.quantity}"> ilość </span></td>
-            <td><span th:text="${product.countProductPrice()}"> cena </span></td>
+            <td><span th:text="${#numbers.formatDecimal(product.countProductPrice(), 1, 2, 'COMMA')}"> cena </span></td>
             <td>
-                <a th:href="@{/basket/edit/}+${product.id}"><span class="material-icons">Edytuj</span></a>
+                <a th:href="@{/basket/edit/}+${product.id}"><span class="btn btn-info">Edytuj</span></a>
             </td>
             <td>
-                <a th:href="@{/basket/delete/}+${product.id}" class="btn btn-danger">Usuń</a>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <span th:text="${totalPrice}"> cena </span> PLN
+                <a th:href="@{/basket/delete/}+${product.id}" class="btn btn-outline-danger">Usuń</a>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <div th:if="${not basketProducts.empty}">
-        <form method="POST" th:action="@{/basket}">
-            <button type="submit" name="submit" class="link-button">Zrealizuj zamówienie!</button>
-        </form>
+    <br>
+    <hr />
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="col"></div>
+            <div class="col">
+                <h5 class="basket-price">suma: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 2, 'COMMA')}"> cena </span>
+                    zł</h5>
+                <div th:if="${not basketProducts.empty}">
+                    <form method="POST" th:action="@{/basket}">
+                        <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">KUPUJĘ!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
