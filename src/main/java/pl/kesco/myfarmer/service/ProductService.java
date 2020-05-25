@@ -2,7 +2,6 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.Product;
@@ -29,6 +28,7 @@ public class ProductService {
                         .userId(userService.getLoggedUser())
                         .deleted(false)
                         .createDate(ZonedDateTime.now())
+                        .ordered(false)
                         .build());
 
         log.info("Created product: {}, with id: {}", newProduct.getName(), newProduct.getId());
@@ -39,7 +39,7 @@ public class ProductService {
     @Transactional
     public void update(Long productId, Product product) {
 
-        productRepo.findById(productId)
+        productRepo.findByIdAndDeletedIsFalse(productId)
                 .filter(product1 -> !product1.isDeleted())
                 .map(productToUpdate -> productToUpdate.toBuilder()
                         .price(product.getPrice())
@@ -53,7 +53,7 @@ public class ProductService {
 
     public void delete(Long id) {
 
-        Optional<Product> optionalProduct = productRepo.findById(id);
+        Optional<Product> optionalProduct = productRepo.findByIdAndDeletedIsFalse(id);
         optionalProduct.ifPresent(product -> {
             if (product.isOrdered()) {
                 productRepo.save(product.toBuilder()
@@ -74,25 +74,25 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
 
-        return productRepo.findAllByOrderByUserIdAsc();
+        return productRepo.findAllByDeletedIsFalseOrderByUserIdAsc();
     }
 
     public List<Product> getAllUserProducts() {
 
         var user = userService.getLoggedUser();
 
-        return productRepo.findAllByUserIdOrderByCreateDate(user);
+        return productRepo.findAllByUserIdAndDeletedIsFalseOrderByCreateDate(user);
     }
 
     public Optional<Product> findById(Long id) {
 
-        return productRepo.findById(id);
+        return productRepo.findByIdAndDeletedIsFalse(id);
     }
 
 
     public void updateQuantity(Product product, Long quantity) {
 
-        var productFromDatabase = productRepo.findById(product.getId());
+        var productFromDatabase = productRepo.findByIdAndDeletedIsFalse(product.getId());
 
         productFromDatabase.ifPresent(prod -> {
             Long updatedQuantity = prod.getQuantity() - quantity;

@@ -27,6 +27,7 @@ public class OrderService {
                         .customerId(user)
                         .date(ZonedDateTime.now())
                         .ordered(false)
+                        .completed(false)
                         .build()
         );
 
