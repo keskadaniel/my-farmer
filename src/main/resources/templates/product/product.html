@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
+                 alt="Brak zdjęcia"/>
+        </div>
+        <div class="col">
+            <h3 th:text="${product.name}"> nazwa </h3>
+            <p th:text="${product.description}"> opis </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <p></p>
+            <p>cena: <span th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')}"> cena </span> zł</p>
+            <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
+                <div class="input-group">
+                    <p>
+                        <input type="number" step="1" min="1" max="" value="1" name="quantity" class="quantity-field"
+                               th:field="*{quantity}" required> z dostępnych
+                        <span th:text="${product.quantity}"> ilość </span>
+                    </p>
+                </div>
+                <button type="submit" name="submit" class="btn btn-success">DO KOSZYKA</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>

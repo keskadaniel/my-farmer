@@ -26,10 +26,14 @@
                 <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
                      alt="Brak zdjęcia"/>
             </td>
-            <td><span th:text="${product.name}"> nazwa </span></td>
+            <td>
+                <a th:href="'/products/'+${product.id}">
+                    <span th:text="${product.name}"> nazwa </span>
+                </a>
+            </td>
             <td><span th:text="${product.description}"> opis </span></td>
             <td><span th:text="${product.quantity}"> ilość </span></td>
-            <td><span th:text="${product.price}"> cena </span> PLN</td>
+            <td><span th:text="${#numbers.formatDecimal(product.price, 1, 2, 'COMMA')}"> cena </span> zł</td>
             <form method="POST" th:object="${ordered}" th:action="@{/products/buy/}+${product.id}">
                 <td>
                     <div class="input-group">
@@ -38,7 +42,7 @@
                     </div>
                 </td>
                 <td>
-                    <button type="submit" name="submit" class="btn btn-success">Kupuję!</button>
+                    <button type="submit" name="submit" class="btn btn-success">DO KOSZYKA</button>
                 </td>
             </form>
         </tr>

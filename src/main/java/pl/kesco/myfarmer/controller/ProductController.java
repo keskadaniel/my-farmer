@@ -1,7 +1,6 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -37,7 +36,27 @@ public class ProductController {
 
         model.addAttribute("ordered", productToBasketDto);
         model.addAttribute("products", productService.getAllProducts());
-        return "product/products";
+        return "product/all-products";
+    }
+
+    @GetMapping("/{id}")
+    public String showProduct(@PathVariable("id") Long productId,
+                              final ModelMap model,
+                              ProductToBasketDto productQnty) {
+
+        boolean productOptional = productService.findById(productId).isEmpty();
+
+        if (productOptional) {
+
+            return "redirect:/products";
+        }
+
+        Product productToDisplay = productService.findById(productId).get();
+
+        model.addAttribute("ordered", productQnty);
+        model.addAttribute("product", productToDisplay);
+
+        return "product/product";
     }
 
     @PostMapping("/buy/{id}")
@@ -76,7 +95,6 @@ public class ProductController {
 
 
     @PostMapping
-    @Async
     public ModelAndView createProduct(@Valid @ModelAttribute("product") CreateProductDto productDto,
                                       BindingResult bindingResult,
                                       @RequestParam("file") MultipartFile file,
