@@ -51,5 +51,7 @@ public class Product {
             orphanRemoval = true)
     private List<BasketPosition> basketPositions = new ArrayList<>();
 
+    private boolean ordered;
+
 
 }

@@ -21,7 +21,6 @@ import java.util.Map;
 public class BasketController {
 
     private final BasketService basketService;
-    private final OrderService orderService;
 
     @GetMapping
     public String showUserBasket(final ModelMap model) {

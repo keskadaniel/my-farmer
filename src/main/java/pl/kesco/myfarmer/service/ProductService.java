@@ -2,7 +2,7 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.Product;
@@ -11,7 +11,6 @@ import pl.kesco.myfarmer.persistence.ProductRepository;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +52,23 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productRepo.findById(id)
-                .ifPresent(product -> productRepo.delete(product));
+
+        Optional<Product> optionalProduct = productRepo.findById(id);
+        optionalProduct.ifPresent(product -> {
+            if (product.isOrdered()) {
+                productRepo.save(product.toBuilder()
+                        .deleted(true)
+                        .quantity(0L)
+                        .name("Produkt usunięty")
+                        .description("-")
+                        .price(0D)
+                        .build());
+
+            } else {
+                productRepo.delete(product);
+            }
+
+        });
     }
 
 
@@ -86,6 +100,7 @@ public class ProductService {
             productRepo.save(prod
                     .toBuilder()
                     .quantity(updatedQuantity)
+                    .ordered(true)
                     .build());
 
         });
