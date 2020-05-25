@@ -45,50 +45,57 @@ body {
 
 }
 
-.logo{
+.logo {
     margin: 20px;
     z-index: 999;
 }
 
-.product{
+.product {
     height: 160px;
 }
 
-.my-account{
+.my-account {
     text-align: left;
 }
 
-.my-account .btn{
+.my-account .btn {
     margin: 5px;
 }
-.order-completed{
+
+.order-completed {
     background: #1e7e34;
 }
-.order-waiting{
+
+.order-waiting {
     background: #c82333;
 }
 
-.btn-light{
+.btn-light {
     background: #c2dde6;
 }
 
-tr{
+.breadcrumb {
+    background: #c2dde6;
+    color: white;
+}
+
+tr {
     border-color: grey;
     border-radius: 5px;
     width: 100%;
 }
 
-th{
+th {
     text-align: center;
     height: 40px;
 
 }
 
-.input-group{
+.input-group {
     display: block;
 }
 
-table{
+table {
     display: inline-block;
     margin: 0 auto;
 
@@ -96,8 +103,8 @@ table{
 
 img {
     display: block;
-    max-width:230px;
-    max-height:150px;
+    max-width: 230px;
+    max-height: 150px;
     width: auto;
     height: auto;
 }
@@ -106,12 +113,13 @@ td {
     text-align: center;
     vertical-align: middle;
 }
-td{
+
+td {
     min-width: 140px;
     padding: 5px;
 }
 
-thead{
+thead {
     background: lightgray;
     margin-top: 5px;
     margin-bottom: 5px;
