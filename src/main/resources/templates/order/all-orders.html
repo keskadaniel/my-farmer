@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th> numer zamówienia</th>
+            <th> data</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${orders.empty}">
+            <td colspan="2">Nic tu nie ma :(</td>
+        </tr>
+        <tr th:each="ordered : ${orders}">
+            <td><span th:text="${ordered.id}"> numer </span></td>
+            <td><span th:text="${#temporals.format(ordered.date, 'dd-MM-yyyy HH:mm')}"> opis </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>

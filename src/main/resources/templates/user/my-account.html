@@ -12,11 +12,14 @@
     <span th:text="${user.phoneNumber}"></span>
     <p>aktywny: </p>
     <span th:text="${user.activated}"></span>
+    <br>
+    <a th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
+    <br>
+    <a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+    <br>
+    <a th:href="'/orders'"><span class="material-icons">Moje zamówienia</span></a>
 </div>
-<br>
-<a th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
-<br>
-<a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+
 
 <div th:replace="fragments/footer :: footer">
 </div>

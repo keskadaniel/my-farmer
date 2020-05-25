@@ -58,7 +58,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Map<String, Object> completeOrder() {
+    public Map<String, Object> buyProducts() {
 
         Map<String, Object> result = new HashMap<>();
         final String key = "ordered";
@@ -99,11 +99,25 @@ public class OrderService {
             result.put("products", productsOutOfStock);
 
             return result;
-        };
+        }
+        ;
 
         result.put(key, true);
 
         return result;
+    }
+
+    public List<Order> readAllCompletedOrders() {
+
+        List<Order> userOrders = new ArrayList<>();
+
+        List<Order> completedOrders = orderRepo.findAllByCustomerIdAndOrderedTrueOrderByDateDesc(userService.getLoggedUser());
+
+        if (completedOrders.size() > 0) {
+            userOrders = completedOrders;
+        }
+
+        return userOrders;
     }
 
     public List<BasketPosition> validateProductsOutOfStock(List<BasketPosition> basketPositions) {
