@@ -20,7 +20,7 @@
         </tr>
         <tr th:each="ordered : ${orders}">
             <td><span th:text="${ordered.id}"> numer </span></td>
-            <td><span th:text="${ordered.total == null ? '-' : ordered.total}"> wartość </span></td>
+            <td><span th:text="${ordered.total == null ? '-' : #numbers.formatDecimal(ordered.total, 1, 2, 'COMMA')}"> wartość </span> zł</td>
             <td><span th:text="${#temporals.format(ordered.date, 'dd-MM-yyyy HH:mm')}"> opis </span></td>
             <td>
                 <span th:if="${ordered.completed == true}" class="order-completed">ZREALIZOWANE</span>

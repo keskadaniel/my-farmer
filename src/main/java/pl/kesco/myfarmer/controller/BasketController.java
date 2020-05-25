@@ -37,7 +37,7 @@ public class BasketController {
     @PostMapping
     public ModelAndView completeOrder(RedirectAttributes redirectAttributes) {
 
-        Map<String, Object> orderedProducts = orderService.buyProducts();
+        Map<String, Object> orderedProducts = basketService.buyProducts();
 
         if (orderedProducts.get("ordered").equals(false)) {
             redirectAttributes.addFlashAttribute("message", "Brakuje produktów!");
