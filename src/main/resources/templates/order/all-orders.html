@@ -12,6 +12,7 @@
             <th> wartość</th>
             <th> data</th>
             <th> status</th>
+            <th> </th>
         </tr>
         </thead>
         <tbody>
@@ -20,11 +21,16 @@
         </tr>
         <tr th:each="ordered : ${orders}">
             <td><span th:text="${ordered.id}"> numer </span></td>
-            <td><span th:text="${ordered.total == null ? '-' : #numbers.formatDecimal(ordered.total, 1, 2, 'COMMA')}"> wartość </span> zł</td>
+            <td><span th:text="${ordered.total == null ? '-' : #numbers.formatDecimal(ordered.total, 1, 2, 'COMMA')}"> wartość </span>
+                zł
+            </td>
             <td><span th:text="${#temporals.format(ordered.date, 'dd-MM-yyyy HH:mm')}"> opis </span></td>
             <td>
                 <span th:if="${ordered.completed == true}" class="order-completed">ZREALIZOWANE</span>
                 <span th:if="${ordered.completed == false}" class="order-waiting">CZEKA NA REALIZACJĘ</span>
+            </td>
+            <td>
+                <a th:href="'/orders/' + ${ordered.id}"><span class="btn btn-primary">SZCZEGÓŁY</span></a>
             </td>
         </tr>
         </tbody>

@@ -52,9 +52,15 @@ body {
 
 .product{
     height: 160px;
-
 }
 
+.my-account{
+    text-align: left;
+}
+
+.my-account .btn{
+    margin: 5px;
+}
 .order-completed{
     background: #1e7e34;
 }
