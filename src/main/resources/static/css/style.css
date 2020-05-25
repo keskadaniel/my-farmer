@@ -68,6 +68,10 @@ body {
     background: #c82333;
 }
 
+.btn-light{
+    background: #c2dde6;
+}
+
 tr{
     border-color: grey;
     border-radius: 5px;
