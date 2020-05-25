@@ -109,6 +109,11 @@ img {
     height: auto;
 }
 
+img.basket-img{
+    max-width: 500px;
+    max-height: 100%;
+}
+
 td {
     text-align: center;
     vertical-align: middle;
