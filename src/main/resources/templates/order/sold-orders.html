@@ -33,7 +33,7 @@
             <td>
                 <a th:href="'/orders/sold/' + ${ordered.id}"><span class="btn btn-outline-primary">SZCZEGÓŁY</span></a>
             </td>
-            <td>
+            <td th:if="${ordered.completed == false}">
                 <form method="POST" th:action="@{/orders/} + ${ordered.id}">
                     <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZROBIONE</button>
                 </form>

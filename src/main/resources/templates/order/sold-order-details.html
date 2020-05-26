@@ -33,9 +33,11 @@
             <div class="col">
                 <h4 class="basket-price">suma: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 2, 'COMMA')}"> total </span>
                     zł</h4>
+                <p>
                 <form method="POST" th:action="@{/orders/} + ${orderId}">
                     <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZREALIZUJ</button>
                 </form>
+                </p>
             </div>
         </div>
     </div>

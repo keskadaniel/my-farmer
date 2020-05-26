@@ -58,13 +58,9 @@ public class OrderService {
                             .completed(true)
                             .build());
 
+                    sendEmailToCustomer(order);
                     log.info("Order no. {} was completed!", order.getId());
                 });
-
-        orderRepo.findById(orderId).ifPresent(order ->
-                sendEmailToCustomer(order)
-        );
-
     }
 
     private void sendEmailToCustomer(Order order) {
