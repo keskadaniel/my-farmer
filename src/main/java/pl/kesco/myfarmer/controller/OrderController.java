@@ -80,8 +80,17 @@ public class OrderController {
 
         model.addAttribute("basketProducts", basketPositions);
         model.addAttribute("totalPrice", optionalOrder.get().getTotal());
+        model.addAttribute("orderId", orderId);
 
         return "order/order";
+    }
+
+    @PostMapping("/{id}")
+    public ModelAndView completeOrder(@PathVariable("id") Long orderId){
+
+        orderService.sell(orderId);
+
+        return new ModelAndView("redirect:/orders/sold");
     }
 
 

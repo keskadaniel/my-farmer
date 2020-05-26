@@ -12,8 +12,8 @@
             <th> wartość</th>
             <th> data</th>
             <th> status</th>
-            <th> </th>
-            <th> </th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -34,7 +34,9 @@
                 <a th:href="'/orders/sold/' + ${ordered.id}"><span class="btn btn-outline-primary">SZCZEGÓŁY</span></a>
             </td>
             <td>
-                <a th:href="'/orders/sold' + ${ordered.id}"><span class="btn btn-success">ZROBIONE</span></a>
+                <form method="POST" th:action="@{/orders/} + ${ordered.id}">
+                    <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZROBIONE</button>
+                </form>
             </td>
         </tr>
         </tbody>
