@@ -3,6 +3,7 @@ package pl.kesco.myfarmer.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.Order;
 import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.OrderRepository;
@@ -18,24 +19,26 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final UserService userService;
 
+    @Transactional
     public Order create(User seller) {
 
         final var user = userService.getLoggedUser();
 
-        var newOrder = orderRepo.save(
-                Order
-                        .builder()
-                        .customerId(user)
-                        .sellerId(seller)
-                        .date(ZonedDateTime.now())
-                        .ordered(false)
-                        .completed(false)
-                        .build()
-        );
+        var userOrder = readUserOrderFromSeller(user, seller).stream()
+                .findFirst()
+                .orElseGet(() -> orderRepo.save(
+                        Order
+                                .builder()
+                                .customerId(user)
+                                .sellerId(seller)
+                                .date(ZonedDateTime.now())
+                                .ordered(false)
+                                .completed(false)
+                                .build()));
 
-        log.info("User with id: {} created new order with id: {}", user.getId(), newOrder.getId());
+        log.info("User with id: {} created new order with id: {}", user.getId(), userOrder.getId());
 
-        return newOrder;
+        return userOrder;
     }
 
     public void update(Order order){
@@ -55,6 +58,10 @@ public class OrderService {
         return orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user);
     }
 
+    private List<Order> readUserOrderFromSeller(User customer, User seller) {
+
+        return orderRepo.findAllByCustomerIdAndSellerIdAndOrderedFalseOrderByDateDesc(customer, seller);
+    }
 
 
     public List<Order> readAllCompletedOrders() {

@@ -28,8 +28,6 @@ public class OrderController {
     @PostMapping
     public ModelAndView createOrder() {
 
-//        orderService.create();
-
         return new ModelAndView("redirect:/");
     }
 
