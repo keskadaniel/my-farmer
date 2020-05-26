@@ -26,5 +26,9 @@ public class Order {
 
     private boolean ordered;
 
+    private boolean completed;
+
+    private Double total;
+
 
 }

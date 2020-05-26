@@ -4,19 +4,28 @@
 <body>
 <div th:replace="fragments/header :: header">
 </div>
-<div class="container">
-    <h1 th:text="${user.name}"></h1>
-    <p>email: </p>
-    <span th:text="${user.email}"></span>
-    <p>phone: </p>
-    <span th:text="${user.phoneNumber}"></span>
-    <p>aktywny: </p>
-    <span th:text="${user.activated}"></span>
+<div class="breadcrumb">
+    Kęski - Moje konto
 </div>
-<br>
-<a th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
-<br>
-<a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+<div class="container">
+    <div class="row my-account">
+        <div class="col">
+            <h2 th:text="${user.name}"></h2>
+            <p>email: <span th:text="${user.email}"></span></p>
+            <p>telefon: <span th:text="${user.phoneNumber}"></span></p>
+            <p>aktywny: <span th:text="${user.activated == true ? 'TAK' : 'NIE'}"></span></p>
+            <p><a href="#"><span class="material-icons">Zmień hasło</span></a></p>
+        </div>
+        <div class="col">
+            <a th:href="'/basket'"><span class="btn btn-light">mój koszyk</span></a>
+            <br>
+            <a th:href="'/products'"><span class="btn btn-light">moje produkty</span></a>
+            <br>
+            <a th:href="'/orders'"><span class="btn btn-light">moje zamówienia</span></a>
+        </div>
+    </div>
+</div>
+
 
 <div th:replace="fragments/footer :: footer">
 </div>

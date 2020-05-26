@@ -21,7 +21,6 @@ import java.util.Map;
 public class BasketController {
 
     private final BasketService basketService;
-    private final OrderService orderService;
 
     @GetMapping
     public String showUserBasket(final ModelMap model) {
@@ -37,7 +36,7 @@ public class BasketController {
     @PostMapping
     public ModelAndView completeOrder(RedirectAttributes redirectAttributes) {
 
-        Map<String, Object> orderedProducts = orderService.completeOrder();
+        Map<String, Object> orderedProducts = basketService.buyProducts();
 
         if (orderedProducts.get("ordered").equals(false)) {
             redirectAttributes.addFlashAttribute("message", "Brakuje produktów!");
