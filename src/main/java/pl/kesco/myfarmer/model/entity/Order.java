@@ -22,6 +22,10 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private User customerId;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User sellerId;
+
     private ZonedDateTime date;
 
     private boolean ordered;

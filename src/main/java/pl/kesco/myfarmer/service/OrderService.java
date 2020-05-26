@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.Order;
+import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.OrderRepository;
 
 import java.time.ZonedDateTime;
@@ -17,7 +18,7 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final UserService userService;
 
-    public Order create() {
+    public Order create(User seller) {
 
         final var user = userService.getLoggedUser();
 
@@ -25,6 +26,7 @@ public class OrderService {
                 Order
                         .builder()
                         .customerId(user)
+                        .sellerId(seller)
                         .date(ZonedDateTime.now())
                         .ordered(false)
                         .completed(false)

@@ -26,9 +26,11 @@ public class BasketService {
 
     public void add(BasketPosition basketPosition) {
 
+        var seller = basketPosition.getProduct().getUserId();
+
         var order = orderService.readUserOrder().stream()
                 .findFirst()
-                .orElseGet(() -> orderService.create());
+                .orElseGet(() -> orderService.create(seller));
 
         basketRepo.findAllByOrder(order).stream()
                 .filter(b -> b.getProduct().equals(basketPosition.getProduct()))

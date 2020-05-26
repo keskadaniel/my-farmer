@@ -28,7 +28,7 @@ public class OrderController {
     @PostMapping
     public ModelAndView createOrder() {
 
-        orderService.create();
+//        orderService.create();
 
         return new ModelAndView("redirect:/");
     }
@@ -43,6 +43,25 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public String showProduct(@PathVariable("id") Long orderId,
+                              final ModelMap model) {
+
+        Optional<Order> optionalOrder = orderService.findById(orderId);
+
+        if(optionalOrder.isEmpty()){
+            return "redirect:/orders";
+        }
+
+        List<BasketPosition> basketPositions = basketService.readAllBasketPositionsByOrder(optionalOrder.get());
+
+        model.addAttribute("basketProducts", basketPositions);
+        model.addAttribute("totalPrice", optionalOrder.get().getTotal());
+
+        return "order/order";
+    }
+
+
+    @GetMapping("/sold")
+    public String showSellerOrders(@PathVariable("id") Long orderId,
                               final ModelMap model) {
 
         Optional<Order> optionalOrder = orderService.findById(orderId);
