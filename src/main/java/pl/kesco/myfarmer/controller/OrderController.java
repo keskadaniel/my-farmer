@@ -34,7 +34,7 @@ public class OrderController {
     @GetMapping
     public String showCompletedOrders(final ModelMap model) {
 
-        model.addAttribute("orders",orderService.readAllCompletedOrders());
+        model.addAttribute("orders", orderService.readAllCompletedOrders());
 
         return "order/all-orders";
     }
@@ -45,7 +45,7 @@ public class OrderController {
 
         Optional<Order> optionalOrder = orderService.findById(orderId);
 
-        if(optionalOrder.isEmpty()){
+        if (optionalOrder.isEmpty()) {
             return "redirect:/orders";
         }
 
@@ -61,9 +61,27 @@ public class OrderController {
     @GetMapping("/sold")
     public String showSellerOrders(final ModelMap model) {
 
-        model.addAttribute("orders",orderService.readOrdersFromSeller());
+        model.addAttribute("orders", orderService.readOrdersFromSeller());
 
         return "order/sold-orders";
+    }
+
+    @GetMapping("/sold/{id}")
+    public String showProductsFromSoldOrder(@PathVariable("id") Long orderId,
+                                            final ModelMap model) {
+
+        Optional<Order> optionalOrder = orderService.findById(orderId);
+
+        if (optionalOrder.isEmpty()) {
+            return "redirect:/orders";
+        }
+
+        List<BasketPosition> basketPositions = basketService.readAllBasketPositionsByOrder(optionalOrder.get());
+
+        model.addAttribute("basketProducts", basketPositions);
+        model.addAttribute("totalPrice", optionalOrder.get().getTotal());
+
+        return "order/order";
     }
 
 

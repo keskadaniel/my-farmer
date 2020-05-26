@@ -31,10 +31,10 @@
                 <span th:if="${ordered.completed == false}" class="order-waiting">CZEKA NA REALIZACJĘ</span>
             </td>
             <td>
-                <a th:href="'/orders/' + ${ordered.id}"><span class="btn btn-outline-primary">SZCZEGÓŁY</span></a>
+                <a th:href="'/orders/sold/' + ${ordered.id}"><span class="btn btn-outline-primary">SZCZEGÓŁY</span></a>
             </td>
             <td>
-                <a th:href="'/orders/' + ${ordered.id}"><span class="btn btn-success">ZROBIONE</span></a>
+                <a th:href="'/orders/sold' + ${ordered.id}"><span class="btn btn-success">ZROBIONE</span></a>
             </td>
         </tr>
         </tbody>

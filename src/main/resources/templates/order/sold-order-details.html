@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
 <body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>no.</th>
+            <th>produkt</th>
+            <th>zamówiona ilość</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${basketProducts.empty}">
+            <td colspan="2">Puste zamówienie</td>
+        </tr>
+        <tr th:each="product,iter : ${basketProducts}">
+            <td><span th:text="${iter.count}"> no </span>.</td>
+            <td><span th:text="${product.product.name}"> opis </span></td>
+            <td><span th:text="${product.quantity}"> ilość </span></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <hr/>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="col"></div>
+            <div class="col">
+                <h4 class="basket-price">suma: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 2, 'COMMA')}"> total </span>
+                    zł</h4>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div th:replace="fragments/footer :: footer">
+</div>
 </body>
 </html>
