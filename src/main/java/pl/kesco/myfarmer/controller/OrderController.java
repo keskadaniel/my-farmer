@@ -5,15 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.kesco.myfarmer.model.dto.CreateProductDto;
-import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
 import pl.kesco.myfarmer.model.entity.BasketPosition;
 import pl.kesco.myfarmer.model.entity.Order;
-import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.OrderService;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +39,7 @@ public class OrderController {
     public String showProduct(@PathVariable("id") Long orderId,
                               final ModelMap model) {
 
-        Optional<Order> optionalOrder = orderService.findById(orderId);
+        Optional<Order> optionalOrder = orderService.readById(orderId);
 
         if (optionalOrder.isEmpty()) {
             return "redirect:/orders";
@@ -70,7 +66,7 @@ public class OrderController {
     public String showProductsFromSoldOrder(@PathVariable("id") Long orderId,
                                             final ModelMap model) {
 
-        Optional<Order> optionalOrder = orderService.findById(orderId);
+        Optional<Order> optionalOrder = orderService.readById(orderId);
 
         if (optionalOrder.isEmpty()) {
             return "redirect:/orders";
@@ -91,6 +87,15 @@ public class OrderController {
         orderService.sell(orderId);
 
         return new ModelAndView("redirect:/orders/sold");
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long productId) {
+
+        orderService.delete(productId);
+
+        return "redirect:/orders/sold";
+
     }
 
 

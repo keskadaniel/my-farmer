@@ -80,7 +80,7 @@ public class BasketService {
 
             basketPositions
                     .forEach(basket ->
-                            productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
+                            productService.removeQuantity(basket.getProduct(), basket.getQuantity()));
 
             sendEmailToCustomer(user, userOrder);
             //assuming we have one Producer

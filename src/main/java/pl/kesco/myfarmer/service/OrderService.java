@@ -52,7 +52,7 @@ public class OrderService {
     @Async
     public void sell(Long orderId) {
 
-        orderRepo.findById(orderId).ifPresent(
+        readById(orderId).ifPresent(
                 order -> {
                     orderRepo.save(order.toBuilder()
                             .completed(true)
@@ -61,6 +61,20 @@ public class OrderService {
                     sendEmailToCustomer(order);
                     log.info("Order no. {} was completed!", order.getId());
                 });
+    }
+
+    public void delete(Long orderId) {
+
+        readById(orderId).ifPresent(order -> {
+            if (order.isCompleted()) {
+                //TODO constrain tables
+//                orderRepo.delete(order);
+            }
+            //ToDo remove not completed and restore products quantity
+            //need products in Order (one to many)
+        });
+
+
     }
 
     private void sendEmailToCustomer(Order order) {
@@ -73,7 +87,7 @@ public class OrderService {
         emailService.sendMessage(email, subject, content);
     }
 
-    public Optional<Order> findById(Long orderId) {
+    public Optional<Order> readById(Long orderId) {
 
         return orderRepo.findById(orderId);
     }

@@ -5,13 +5,18 @@
 <div th:replace="fragments/header :: header">
 </div>
 <div class="container">
+    <div class="new-product">
+        <a th:href="'/products/new'"><span class="btn btn-info">Dodaj nowy produkt</span></a>
+    </div>
     <table>
         <thead>
         <tr>
+            <th></th>
             <th> Nazwa</th>
             <th> Opis</th>
             <th> Ilość</th>
             <th> Cena</th>
+            <th></th>
             <th></th>
         </tr>
         </thead>
@@ -20,6 +25,10 @@
             <td colspan="2">Może coś sprzedasz?</td>
         </tr>
         <tr th:each="product : ${products}">
+            <td>
+                <img th:src="${product.imageUrl != 'brak' ? product.imageUrl :'/img/noimage.jpg'}"
+                     alt="Brak zdjęcia"/>
+            </td>
             <td><span th:text="${product.name}"> nazwa </span></td>
             <td><span th:text="${product.description}"> opis </span></td>
             <td><span th:text="${product.quantity}"> ilość </span></td>
@@ -34,8 +43,6 @@
         </tr>
         </tbody>
     </table>
-
-    <a th:href="'/products/new'"><span class="material-icons">Dodaj nowy produkt</span></a>
 </div>
 
 <div th:replace="fragments/footer :: footer">

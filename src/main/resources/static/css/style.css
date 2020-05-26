@@ -79,6 +79,10 @@ body {
     color: white;
 }
 
+.new-product{
+    margin-bottom: 20px;
+}
+
 tr {
     border-color: grey;
     border-radius: 5px;
@@ -125,11 +129,11 @@ td {
 }
 
 thead {
-    background: lightgray;
+    background: #2ECC40 ;
     margin-top: 5px;
     margin-bottom: 5px;
     border: 1px solid grey;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 input,

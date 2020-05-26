@@ -90,19 +90,32 @@ public class ProductService {
     }
 
 
-    public void updateQuantity(Product product, Long quantity) {
+    public void removeQuantity(Product product, Long quantity) {
 
-        var productFromDatabase = productRepo.findByIdAndDeletedIsFalse(product.getId());
+        findById(product.getId()).ifPresent(prod -> {
+            final Long updatedQuantity = prod.getQuantity() - quantity;
 
-        productFromDatabase.ifPresent(prod -> {
-            Long updatedQuantity = prod.getQuantity() - quantity;
-
-            productRepo.save(prod
-                    .toBuilder()
-                    .quantity(updatedQuantity)
-                    .ordered(true)
-                    .build());
+            updateQuantity(prod, updatedQuantity);
 
         });
     }
+
+    public void addQuantity(Product product, Long quantity) {
+
+        findById(product.getId()).ifPresent(prod -> {
+            final Long updatedQuantity = prod.getQuantity() + quantity;
+
+            updateQuantity(prod, updatedQuantity);
+
+        });
+    }
+
+    private void updateQuantity(Product prod, Long updatedQuantity) {
+        productRepo.save(prod
+                .toBuilder()
+                .quantity(updatedQuantity)
+                .ordered(true)
+                .build());
+    }
+
 }

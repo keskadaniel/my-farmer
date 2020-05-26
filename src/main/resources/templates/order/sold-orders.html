@@ -38,6 +38,9 @@
                     <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZROBIONE</button>
                 </form>
             </td>
+            <td th:if="${ordered.completed == true}">
+                <a th:href="@{/orders/delete/}+${ordered.id}" class="btn btn-danger">Usuń</a>
+            </td>
         </tr>
         </tbody>
     </table>
