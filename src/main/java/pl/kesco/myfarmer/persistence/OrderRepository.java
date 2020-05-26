@@ -13,5 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByCustomerIdAndOrderedFalseOrderByDateDesc(User user);
     List<Order> findAllByCustomerIdAndSellerIdAndOrderedFalseOrderByDateDesc(User customer, User seller);
     List<Order> findAllByCustomerIdAndOrderedTrueOrderByDateDesc(User user);
+    List<Order> findAllBySellerIdAndOrderedTrueOrderByDateDesc(User seller);
 
 }

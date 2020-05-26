@@ -58,6 +58,20 @@ public class OrderService {
         return orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user);
     }
 
+    public List<Order> readOrdersFromSeller(){
+
+        var user = userService.getLoggedUser();
+        List<Order> sellerOrders = new ArrayList<>();
+
+        var actualOrders = orderRepo.findAllBySellerIdAndOrderedTrueOrderByDateDesc(user);
+
+        if(!actualOrders.isEmpty()){
+            sellerOrders = actualOrders;
+        }
+
+        return sellerOrders;
+    }
+
     private List<Order> readUserOrderFromSeller(User customer, User seller) {
 
         return orderRepo.findAllByCustomerIdAndSellerIdAndOrderedFalseOrderByDateDesc(customer, seller);
