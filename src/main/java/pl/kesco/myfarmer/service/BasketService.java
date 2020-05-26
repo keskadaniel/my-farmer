@@ -26,9 +26,9 @@ public class BasketService {
 
     public void add(BasketPosition basketPosition) {
 
-        var order = orderService.readUserOrder().stream()
-                .findFirst()
-                .orElseGet(() -> orderService.create());
+        var seller = basketPosition.getProduct().getUserId();
+
+        var order = orderService.create(seller);
 
         basketRepo.findAllByOrder(order).stream()
                 .filter(b -> b.getProduct().equals(basketPosition.getProduct()))
@@ -56,6 +56,7 @@ public class BasketService {
         List<BasketPosition> basketPositions = new ArrayList<>();
         final var user = userService.getLoggedUser();
 
+        //ToDo take seller issue
         Optional<Order> userOrder = orderService.readUserOrder().stream().findFirst();
 
 
@@ -79,7 +80,7 @@ public class BasketService {
 
             basketPositions
                     .forEach(basket ->
-                            productService.updateQuantity(basket.getProduct(), basket.getQuantity()));
+                            productService.removeQuantity(basket.getProduct(), basket.getQuantity()));
 
             sendEmailToCustomer(user, userOrder);
             //assuming we have one Producer

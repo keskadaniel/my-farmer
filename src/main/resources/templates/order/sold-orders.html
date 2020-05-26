@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th> numer zamówienia</th>
+            <th> wartość</th>
+            <th> data</th>
+            <th> status</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${orders.empty}">
+            <td colspan="2">Nic tu nie ma :(</td>
+        </tr>
+        <tr th:each="ordered : ${orders}">
+            <td><span th:text="${ordered.id}"> numer </span></td>
+            <td><span th:text="${ordered.total == null ? '-' : #numbers.formatDecimal(ordered.total, 1, 2, 'COMMA')}"> wartość </span>
+                zł
+            </td>
+            <td><span th:text="${#temporals.format(ordered.date, 'dd-MM-yyyy HH:mm')}"> opis </span></td>
+            <td>
+                <span th:if="${ordered.completed == true}" class="order-completed">ZREALIZOWANE</span>
+                <span th:if="${ordered.completed == false}" class="order-waiting">CZEKA NA REALIZACJĘ</span>
+            </td>
+            <td>
+                <a th:href="'/orders/sold/' + ${ordered.id}"><span class="btn btn-outline-primary">SZCZEGÓŁY</span></a>
+            </td>
+            <td th:if="${ordered.completed == false}">
+                <form method="POST" th:action="@{/orders/} + ${ordered.id}">
+                    <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZROBIONE</button>
+                </form>
+            </td>
+            <td th:if="${ordered.completed == true}">
+                <a th:href="@{/orders/delete/}+${ordered.id}" class="btn btn-danger">Usuń</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>

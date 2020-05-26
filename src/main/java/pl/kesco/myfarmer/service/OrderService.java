@@ -2,9 +2,13 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.Order;
+import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.OrderRepository;
+import pl.kesco.myfarmer.service.mail.EmailService;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -16,32 +20,74 @@ public class OrderService {
 
     private final OrderRepository orderRepo;
     private final UserService userService;
+    private final EmailService emailService;
 
-    public Order create() {
+    @Transactional
+    public Order create(User seller) {
 
         final var user = userService.getLoggedUser();
 
-        var newOrder = orderRepo.save(
-                Order
-                        .builder()
-                        .customerId(user)
-                        .date(ZonedDateTime.now())
-                        .ordered(false)
-                        .completed(false)
-                        .build()
-        );
+        var userOrder = readUserOrderFromSeller(user, seller).stream()
+                .findFirst()
+                .orElseGet(() -> orderRepo.save(
+                        Order
+                                .builder()
+                                .customerId(user)
+                                .sellerId(seller)
+                                .date(ZonedDateTime.now())
+                                .ordered(false)
+                                .completed(false)
+                                .build()));
 
-        log.info("User with id: {} created new order with id: {}", user.getId(), newOrder.getId());
+        log.info("User with id: {} created new order with id: {}", user.getId(), userOrder.getId());
 
-        return newOrder;
+        return userOrder;
     }
 
-    public void update(Order order){
+    public void update(Order order) {
 
         orderRepo.save(order);
     }
 
-    public Optional<Order> findById(Long orderId) {
+    @Async
+    public void sell(Long orderId) {
+
+        readById(orderId).ifPresent(
+                order -> {
+                    orderRepo.save(order.toBuilder()
+                            .completed(true)
+                            .build());
+
+                    sendEmailToCustomer(order);
+                    log.info("Order no. {} was completed!", order.getId());
+                });
+    }
+
+    public void delete(Long orderId) {
+
+        readById(orderId).ifPresent(order -> {
+            if (order.isCompleted()) {
+                //TODO constrain tables
+//                orderRepo.delete(order);
+            }
+            //ToDo remove not completed and restore products quantity
+            //need products in Order (one to many)
+        });
+
+
+    }
+
+    private void sendEmailToCustomer(Order order) {
+        String email = order.getCustomerId().getEmail();
+        String subject = "Realizacja zamówienia";
+        String content = new StringBuilder("Twoje zamówienie o numerze ")
+                .append(order.getId())
+                .append(" zostało zrealizowane!").toString();
+
+        emailService.sendMessage(email, subject, content);
+    }
+
+    public Optional<Order> readById(Long orderId) {
 
         return orderRepo.findById(orderId);
     }
@@ -53,6 +99,24 @@ public class OrderService {
         return orderRepo.findAllByCustomerIdAndOrderedFalseOrderByDateDesc(user);
     }
 
+    public List<Order> readOrdersFromSeller() {
+
+        var user = userService.getLoggedUser();
+        List<Order> sellerOrders = new ArrayList<>();
+
+        var actualOrders = orderRepo.findAllBySellerIdAndOrderedTrueOrderByDateDesc(user);
+
+        if (!actualOrders.isEmpty()) {
+            sellerOrders = actualOrders;
+        }
+
+        return sellerOrders;
+    }
+
+    private List<Order> readUserOrderFromSeller(User customer, User seller) {
+
+        return orderRepo.findAllByCustomerIdAndSellerIdAndOrderedFalseOrderByDateDesc(customer, seller);
+    }
 
 
     public List<Order> readAllCompletedOrders() {
