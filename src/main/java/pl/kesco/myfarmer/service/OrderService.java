@@ -68,7 +68,7 @@ public class OrderService {
         readById(orderId).ifPresent(order -> {
             if (order.isCompleted()) {
                 //TODO constrain tables
-//                orderRepo.delete(order);
+                orderRepo.delete(order);
             }
             //ToDo remove not completed and restore products quantity
             //need products in Order (one to many)
