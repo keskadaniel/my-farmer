@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -33,6 +35,10 @@ public class Order {
     private boolean completed;
 
     private Double total;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "order")
+    private Set<BasketPosition> basketPositions = new HashSet<>();
 
 
 }

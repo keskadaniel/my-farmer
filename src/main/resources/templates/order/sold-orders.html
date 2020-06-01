@@ -14,6 +14,7 @@
             <th> status</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -35,11 +36,11 @@
             </td>
             <td th:if="${ordered.completed == false}">
                 <form method="POST" th:action="@{/orders/} + ${ordered.id}">
-                    <button type="submit" name="submit" class="btn btn-success btn-primary btn-lg">ZROBIONE</button>
+                    <button type="submit" name="submit" class="btn btn-success btn-primary">ZROBIONE</button>
                 </form>
             </td>
-            <td th:if="${ordered.completed == true}">
-                <a th:href="@{/orders/delete/}+${ordered.id}" class="btn btn-danger">Usuń</a>
+            <td>
+                <a th:href="@{/orders/delete/}+${ordered.id}" class="btn btn-outline-danger">Usuń</a>
             </td>
         </tr>
         </tbody>

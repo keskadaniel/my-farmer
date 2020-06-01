@@ -21,6 +21,7 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final UserService userService;
     private final EmailService emailService;
+    private final ProductService productService;
 
     @Transactional
     public Order create(User seller) {
@@ -67,11 +68,16 @@ public class OrderService {
 
         readById(orderId).ifPresent(order -> {
             if (order.isCompleted()) {
-                //TODO constrain tables
-//                orderRepo.delete(order);
+                orderRepo.delete(order);
+            } else {
+                order.getBasketPositions().forEach(
+                        basketPosition -> {
+                            productService
+                                    .addQuantity(basketPosition.getProduct(), basketPosition.getQuantity());
+
+                            orderRepo.delete(order);
+                        });
             }
-            //ToDo remove not completed and restore products quantity
-            //need products in Order (one to many)
         });
 
 
