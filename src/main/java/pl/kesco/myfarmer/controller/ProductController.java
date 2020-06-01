@@ -1,6 +1,7 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -125,6 +126,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_SELLER', 'ROLE_ADMIN')")
     public String showProductToEdit(@PathVariable("id") Long productId,
                                     final ModelMap model,
                                     EditProductDto editProduct) {
