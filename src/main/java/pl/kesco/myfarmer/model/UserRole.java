@@ -2,6 +2,6 @@ package pl.kesco.myfarmer.model;
 
 public enum UserRole {
 
-    SELLER, CUSTOMER, ADMIN
+    SELLER, CUSTOMER, ADMIN, GUEST
 
 }
