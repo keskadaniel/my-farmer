@@ -15,6 +15,7 @@ import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.service.BasketService;
 import pl.kesco.myfarmer.service.ImageService;
 import pl.kesco.myfarmer.service.ProductService;
+import pl.kesco.myfarmer.service.UtilService;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class ProductController {
     private final ProductService productService;
     private final BasketService basketService;
     private final ImageService imageService;
+    private final UtilService utilService;
 
 
     @GetMapping
@@ -155,6 +157,10 @@ public class ProductController {
     public ModelAndView editProduct(@Valid @ModelAttribute("product") EditProductDto editProduct,
                                     @PathVariable("id") Long productId,
                                     final ModelMap model) {
+
+        if (utilService.validateIsProductNotOwnedByUser(productId)) {
+            return new ModelAndView("redirect:/users/products", model);
+        }
 
         productService.update(productId, Product.builder()
                 .name(editProduct.getName())

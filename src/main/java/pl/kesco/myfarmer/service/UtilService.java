@@ -9,6 +9,8 @@ import pl.kesco.myfarmer.persistence.UserRepository;
 public class UtilService {
 
     private final UserRepository userRepository;
+    private final UserService userService;
+    private final ProductService productService;
 
 
     public boolean validateIsEmailUnique(String email) {
@@ -16,4 +18,15 @@ public class UtilService {
         return userRepository.findByEmailIgnoreCase(email)
                 .isEmpty();
     }
+
+    public boolean validateIsProductNotOwnedByUser(Long productId) {
+
+        final var loggedUser = userService.getLoggedUser();
+
+        return productService.findById(productId)
+                .filter(product -> product.getUserId().getId() == loggedUser.getId())
+                .isEmpty();
+    }
+
+
 }
