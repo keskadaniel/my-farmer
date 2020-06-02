@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.UserRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -34,6 +36,11 @@ public class UserService {
         String loggedUsername = authentication.getName();
 
         return userRepo.findByEmailIgnoreCase(loggedUsername).get();
+    }
+
+    public List<User> readAllUsers(){
+
+        return userRepo.findAll();
     }
 
 }

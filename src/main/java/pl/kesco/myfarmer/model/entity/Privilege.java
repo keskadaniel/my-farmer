@@ -3,6 +3,7 @@ package pl.kesco.myfarmer.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -21,5 +22,5 @@ public class Privilege {
     private String name;
 
     @ManyToMany(mappedBy = "privileges")
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 }

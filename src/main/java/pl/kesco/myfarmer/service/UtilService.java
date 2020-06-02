@@ -23,7 +23,7 @@ public class UtilService {
 
         final var loggedUser = userService.getLoggedUser();
 
-        return productService.findById(productId)
+        return productService.readById(productId)
                 .filter(product -> product.getUserId().getId() == loggedUser.getId())
                 .isEmpty();
     }

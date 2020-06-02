@@ -11,6 +11,10 @@
     <a sec:authorize="isAuthenticated()" th:href="'/basket'"><span class="material-icons">Mój koszyk</span></a>
     <br>
     <a th:href="'/products'"><span class="material-icons">Produkty</span></a>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <br>
+    <a th:href="'/users'"><span class="material-icons">Użytkownicy</span></a>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer">
 </div>

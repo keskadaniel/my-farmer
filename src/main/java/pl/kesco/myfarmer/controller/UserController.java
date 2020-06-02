@@ -1,6 +1,7 @@
 package pl.kesco.myfarmer.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,16 @@ public class UserController {
     private final UserService userService;
     private final UtilService utilService;
     private final ProductService productService;
+
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String showAllusers(final ModelMap model){
+
+        model.addAttribute("users", userService.readAllUsers());
+
+        return "user/all-users";
+    }
 
     @GetMapping("/my-account")
     public String userAccount(final ModelMap model){
@@ -66,7 +77,7 @@ public class UserController {
     public String showAllProducts(final ModelMap model,
                                   ProductToBasketDto productToBasketDto) {
 
-        model.addAttribute("products", productService.getAllUserProducts());
+        model.addAttribute("products", productService.readAllUserProducts());
         return "user/my-products";
     }
 

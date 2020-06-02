@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th> Id</th>
+            <th> Nazwa</th>
+            <th> Email</th>
+            <th> Numer telefonu</th>
+            <th> Dostępny</th>
+            <th> Rola</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${users.empty}">
+            <td colspan="2">Nikogo tu nie ma</td>
+        </tr>
+        <tr th:each="user : ${users}" class="user">
+            <td><span th:text="${user.id}"> id </span></td>
+            <td><span th:text="${user.name}"> nazwa </span></td>
+            <td><span th:text="${user.email}"> email </span></td>
+            <td><span th:text="${user.phoneNumber}"> numer </span></td>
+            <td><span th:text="${user.enabled}"> dostępny </span></td>
+            <td><span th:text="${user.roles}"> rola </span></td>
+            <td>
+                <a th:href="'/users/edit'+${user.id}">
+                    <span>Edytuj</span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>

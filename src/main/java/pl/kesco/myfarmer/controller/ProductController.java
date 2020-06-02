@@ -38,7 +38,7 @@ public class ProductController {
                                   ProductToBasketDto productToBasketDto) {
 
         model.addAttribute("ordered", productToBasketDto);
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.readAllProducts());
         return "product/all-products";
     }
 
@@ -47,14 +47,14 @@ public class ProductController {
                               final ModelMap model,
                               ProductToBasketDto productQnty) {
 
-        boolean productOptional = productService.findById(productId).isEmpty();
+        boolean productOptional = productService.readById(productId).isEmpty();
 
         if (productOptional) {
 
             return "redirect:/products";
         }
 
-        Product productToDisplay = productService.findById(productId).get();
+        Product productToDisplay = productService.readById(productId).get();
 
         model.addAttribute("ordered", productQnty);
         model.addAttribute("product", productToDisplay);
@@ -68,7 +68,7 @@ public class ProductController {
                                     final ModelMap model) {
 
 
-        var productToOrder = productService.findById(productId)
+        var productToOrder = productService.readById(productId)
                 //TODO throw error
                 .orElseThrow();
 
@@ -131,7 +131,7 @@ public class ProductController {
                                     final ModelMap model,
                                     EditProductDto editProduct) {
 
-        Optional<Product> productToEdit = productService.findById(productId);
+        Optional<Product> productToEdit = productService.readById(productId);
 
         if (productToEdit.isEmpty()) {
 

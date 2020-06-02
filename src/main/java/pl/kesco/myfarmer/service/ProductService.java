@@ -72,19 +72,19 @@ public class ProductService {
     }
 
 
-    public List<Product> getAllProducts() {
+    public List<Product> readAllProducts() {
 
         return productRepo.findAllByDeletedIsFalseOrderByUserIdAsc();
     }
 
-    public List<Product> getAllUserProducts() {
+    public List<Product> readAllUserProducts() {
 
         var user = userService.getLoggedUser();
 
         return productRepo.findAllByUserIdAndDeletedIsFalseOrderByCreateDate(user);
     }
 
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> readById(Long id) {
 
         return productRepo.findByIdAndDeletedIsFalse(id);
     }
@@ -92,7 +92,7 @@ public class ProductService {
 
     public void removeQuantity(Product product, Long quantity) {
 
-        findById(product.getId()).ifPresent(prod -> {
+        readById(product.getId()).ifPresent(prod -> {
             final Long updatedQuantity = prod.getQuantity() - quantity;
 
             updateQuantity(prod, updatedQuantity);
@@ -102,7 +102,7 @@ public class ProductService {
 
     public void addQuantity(Product product, Long quantity) {
 
-        findById(product.getId()).ifPresent(prod -> {
+        readById(product.getId()).ifPresent(prod -> {
             final Long updatedQuantity = prod.getQuantity() + quantity;
 
             updateQuantity(prod, updatedQuantity);
