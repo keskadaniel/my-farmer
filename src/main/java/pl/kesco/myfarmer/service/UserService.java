@@ -5,10 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +40,38 @@ public class UserService {
         return userRepo.findByEmailIgnoreCase(loggedUsername).get();
     }
 
-    public List<User> readAllUsers(){
+    public List<User> readAllUsers() {
 
         return userRepo.findAll();
+    }
+
+    public Optional<User> readById(Long userId) {
+
+        return userRepo.findById(userId);
+    }
+
+    @Transactional
+    public boolean update(Long userId, User user) {
+
+        Optional<User> optionalUser = userRepo.findById(userId);
+
+        if (optionalUser.isEmpty()) {
+            return false;
+        }
+
+        optionalUser.map(user1 ->
+                user1.toBuilder()
+                        .roles(user.getRoles())
+                        .phoneNumber(user.getPhoneNumber())
+                        .enabled(user.isEnabled())
+                        .activated(user.isActivated())
+                        .name(user.getName())
+                        .password(user.getPassword())
+                        .email(user.getEmail())
+                        .build()
+        ).ifPresent(userRepo::save);
+
+        return true;
     }
 
 }

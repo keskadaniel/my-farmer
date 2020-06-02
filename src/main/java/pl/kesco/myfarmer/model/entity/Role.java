@@ -1,7 +1,6 @@
 package pl.kesco.myfarmer.model.entity;
 
 import lombok.*;
-import pl.kesco.myfarmer.model.UserRole;
 
 import javax.persistence.*;
 import java.util.HashSet;
