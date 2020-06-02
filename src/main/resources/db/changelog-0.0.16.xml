@@ -1,0 +1,59 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="daniel (generated)" id="1587388427205-16">
+
+        <dropColumn columnName="role"
+                    schemaName="public"
+                    tableName="users">
+            <column name="role"/>
+        </dropColumn>
+
+        <dropColumn columnName="id"
+                    schemaName="public"
+                    tableName="roles">
+            <column name="user_id"/>
+            <column name="role"/>
+        </dropColumn>
+
+        <createTable tableName="privileges">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"
+                             primaryKeyName="privileges_pk"/>
+            </column>
+            <column name="name" type="VARCHAR"/>
+        </createTable>
+
+        <createTable tableName="users_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints referencedTableName="users"
+                             referencedColumnNames="id"
+                             foreignKeyName="users_pk"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints referencedTableName="roles"
+                             referencedColumnNames="id"
+                             foreignKeyName="roles_pk"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="roles_privileges">
+            <column name="role_id" type="BIGINT">
+                <constraints referencedTableName="roles"
+                             referencedColumnNames="id"
+                             foreignKeyName="roles_pk"/>
+            </column>
+            <column name="privilege_id" type="BIGINT">
+                <constraints referencedTableName="privileges"
+                             referencedColumnNames="id"
+                             foreignKeyName="privileges_pk"/>
+            </column>
+        </createTable>
+
+
+    </changeSet>
+</databaseChangeLog>
+
+

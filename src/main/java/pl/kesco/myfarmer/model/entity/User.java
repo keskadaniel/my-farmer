@@ -1,16 +1,17 @@
 package pl.kesco.myfarmer.model.entity;
 
-import lombok.*;
-import org.aspectj.bridge.IMessage;
-import org.springframework.context.annotation.EnableMBeanExport;
-import org.springframework.lang.NonNull;
-import pl.kesco.myfarmer.model.UserRole;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,7 +42,13 @@ public class User {
     private boolean activated;
     private boolean enabled;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
 }

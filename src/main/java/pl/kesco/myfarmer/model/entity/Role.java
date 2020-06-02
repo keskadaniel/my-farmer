@@ -4,6 +4,7 @@ import lombok.*;
 import pl.kesco.myfarmer.model.UserRole;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,13 +19,19 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-//    @ManyToMany
-    private Long userId;
+    private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private UserRole role;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "roles_privileges",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "privilege_id", referencedColumnName = "id"))
+    private Set<Privilege> privileges;   ;
 
 
 

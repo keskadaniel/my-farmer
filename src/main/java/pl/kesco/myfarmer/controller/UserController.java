@@ -57,7 +57,6 @@ public class UserController {
         .name(addUserDto.getName())
         .email(addUserDto.getEmail())
         .password(addUserDto.getPassword())
-        .role(addUserDto.getRole())
         .build());
 
         return new ModelAndView("redirect:/", model);
