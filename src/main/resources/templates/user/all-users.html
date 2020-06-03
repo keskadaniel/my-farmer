@@ -30,7 +30,7 @@
             <td th:each="role : ${user.roles}">
                 <span th:text="${role.name}"> rola </span></td>
             <td>
-                <a th:href="'/users/edit'+${user.id}">
+                <a th:href="'/users/edit/'+${user.id}">
                     <span>Edytuj</span>
                 </a>
             </td>

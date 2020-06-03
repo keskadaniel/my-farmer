@@ -58,7 +58,8 @@ public class UserController {
         optionaluser.ifPresent(
                 user -> {
                     editUserDto.setName(user.getName());
-                    editUserDto.setRole(user.getRoles().iterator().next().getName());
+                    String role = getRole(user);
+                    editUserDto.setRole(role);
                 }
         );
 
@@ -66,6 +67,12 @@ public class UserController {
         model.addAttribute("user", optionaluser.get());
 
         return "user/edit-user";
+    }
+
+    private String getRole(User user) {
+
+        //todo what if no roles
+        return user.getRoles().iterator().next().getName();
     }
 
     @PostMapping("/edit/{id}")

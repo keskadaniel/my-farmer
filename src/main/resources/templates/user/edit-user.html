@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/common-head :: common-head"/>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+
+<div class="container">
+
+    <form action="#" th:action="@{/users/edit/}+${id}" th:object="${userEdit}" method="post">
+        <div class="form-group">
+            <label >Nazwa</label>
+            <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
+        </div>
+        <div class="form-group">
+            <label>Rola</label>
+            <input type="text" class="form-control" id="rola" placeholder="rola"
+                   th:field="*{role}">
+        </div>
+<!--        <div class="form-group">-->
+<!--            <label>Jak będziesz sprzedawać?</label>-->
+<!--            <select id="unit" name="role" th:field="*{unit}">-->
+<!--                <option th:value="'KG'" th:text="kilogram"></option>-->
+<!--                <option th:value="'PIECE'" th:text="sztuka"></option>-->
+<!--                <option th:value="'LITER'" th:text="litr"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label>Ile tego masz?</label>-->
+<!--            <input type="text" class="form-control" placeholder="email"-->
+<!--                   th:field="*{quantity}">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label>Cena za sztukę, kg lub litr?</label>-->
+<!--            <input type="text" class="form-control" placeholder="cena" th:field="*{price}">-->
+<!--        </div>-->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+</html>
