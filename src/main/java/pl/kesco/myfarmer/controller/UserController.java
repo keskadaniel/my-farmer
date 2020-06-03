@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.kesco.myfarmer.model.dto.AddUserDto;
-import pl.kesco.myfarmer.model.dto.EditProductDto;
-import pl.kesco.myfarmer.model.dto.EditUserDto;
-import pl.kesco.myfarmer.model.dto.ProductToBasketDto;
+import pl.kesco.myfarmer.model.dto.*;
 import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.model.entity.Role;
 import pl.kesco.myfarmer.model.entity.User;
@@ -32,10 +29,12 @@ public class UserController {
     private final ProductService productService;
     private final RoleService roleService;
 
+    public static final String ADD_ROLE = "add_role";
+    public static final String REMOVE_ROLE = "remove_role";
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String showAllusers(final ModelMap model) {
+    public String showAllUsers(final ModelMap model) {
 
         model.addAttribute("users", userService.readAllUsers());
 
@@ -46,7 +45,8 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String showUserToEdit(@PathVariable("id") Long userId,
                                  final ModelMap model,
-                                 EditUserDto editUserDto) {
+                                 EditUserDto editUserDto,
+                                 EditRoleDto editRoleDto) {
 
         Optional<User> optionaluser = userService.readById(userId);
 
@@ -58,24 +58,15 @@ public class UserController {
         optionaluser.ifPresent(
                 user -> {
                     editUserDto.setName(user.getName());
-                    editUserDto.setRole(getRole(user));
+                    editUserDto.setEnabled(user.isEnabled());
                 }
         );
 
         model.addAttribute("userEdit", editUserDto);
         model.addAttribute("user", optionaluser.get());
+        model.addAttribute("userRole", editRoleDto);
 
         return "user/edit-user";
-    }
-
-    private String getRole(User user) {
-
-        Set<Role> roles = user.getRoles();
-
-        if(roles.size() > 0){
-            return roles.iterator().next().getName();
-        }
-        return "No role attached";
     }
 
     @PostMapping("/edit/{id}")
@@ -89,11 +80,43 @@ public class UserController {
         user.ifPresent(user1 -> {
             userService.update(userId, user1.toBuilder()
                     .name(editUserDto.getName())
-                    .roles(updateRoles(editUserDto.getRole(), user1))
+                    .enabled(editUserDto.isEnabled())
                     .build());
         });
 
         return new ModelAndView("redirect:/users", model);
+    }
+
+    @PostMapping("/addRole/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView addRole(@Valid @ModelAttribute("userRole") EditRoleDto editRoleDto,
+                                @PathVariable("id") Long userId,
+                                final ModelMap model) {
+
+        editRole(editRoleDto, userId, ADD_ROLE);
+
+        return new ModelAndView("redirect:/users/edit/" + userId, model);
+    }
+
+    @PostMapping("/removeRole/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView removeRole(@Valid @ModelAttribute("userRole") EditRoleDto editRoleDto,
+                                   @PathVariable("id") Long userId,
+                                   final ModelMap model) {
+
+        editRole(editRoleDto, userId, REMOVE_ROLE);
+
+        return new ModelAndView("redirect:/users/edit/" + userId, model);
+    }
+
+    private void editRole(EditRoleDto editRoleDto, Long userId, String action) {
+        Optional<User> user = userService.readById(userId);
+
+        user.ifPresent(user1 -> {
+            userService.update(userId, user1.toBuilder()
+                    .roles(updateRoles(editRoleDto.getRole(), user1, action))
+                    .build());
+        });
     }
 
     @GetMapping("/delete/{id}")
@@ -106,11 +129,17 @@ public class UserController {
 
     }
 
-    private Set<Role> updateRoles(String roleName, User user) {
+    private Set<Role> updateRoles(String roleName, User user, String action) {
 
-        user.getRoles().add(getRole(roleName));
+        Set<Role> userRoles = user.getRoles();
 
-        return user.getRoles();
+        if (action.equals(REMOVE_ROLE)) {
+            userRoles.remove(getRole(roleName));
+        } else if (action.equals(ADD_ROLE)) {
+            userRoles.add(getRole(roleName));
+        }
+
+        return userRoles;
     }
 
     private Role getRole(String roleName) {

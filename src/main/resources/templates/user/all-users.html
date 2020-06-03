@@ -29,9 +29,14 @@
             <td><span th:text="${user.phoneNumber}"> numer </span></td>
             <td><span th:text="${user.enabled == true ? 'TAK' : 'NIE'}">aktywny</span></td>
             <td>
-                <span th:if="${user.roles[0].name == 'ROLE_ADMIN'}">ADMIN</span>
-                <span th:if="${user.roles[0].name == 'ROLE_SELLER'}">SPRZEDAWCA</span>
-                <span th:if="${user.roles[0].name == 'ROLE_CUSTOMER'}">KLIENT</span>
+                <div th:if="${#lists.size(user.roles) > 0}">
+                    <span th:if="${user.roles[0].name == 'ROLE_ADMIN'}">ADMIN</span>
+                    <span th:if="${user.roles[0].name == 'ROLE_SELLER'}">SPRZEDAWCA</span>
+                    <span th:if="${user.roles[0].name == 'ROLE_CUSTOMER'}">KLIENT</span>
+                </div>
+                <div th:if="${#lists.size(user.roles) == 0}">
+                    <span>-</span>
+                </div>
             </td>
             <td>
                 <a class="btn btn-outline-primary" th:href="'/users/edit/'+${user.id}">

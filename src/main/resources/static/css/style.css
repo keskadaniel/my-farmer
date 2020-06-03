@@ -83,6 +83,12 @@ body {
     margin-bottom: 20px;
 }
 
+.edit-user{
+    width: 35%;
+    text-align: center;
+    margin: auto;
+}
+
 tr {
     border-color: grey;
     border-radius: 5px;

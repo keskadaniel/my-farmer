@@ -6,39 +6,58 @@
 </div>
 
 <div class="container">
-
     <form action="#" th:action="@{/users/edit/}+${id}" th:object="${userEdit}" method="post">
         <div class="form-group">
-            <label >Nazwa</label>
-            <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
+            <label>Nazwa</label>
+            <input type="text" class="form-control edit-user" placeholder="nazwa" th:field="*{name}">
         </div>
-<!--        <div class="form-group">-->
-<!--            <label>Rola</label>-->
-<!--            <input type="text" class="form-control" id="rola" placeholder="rola"-->
-<!--                   th:field="*{role}">-->
-<!--        </div>-->
+        <div class="form-group">
+            <label>Dostępny</label>
+            <select id="unit" name="role" th:field="*{enabled}">
+                <option th:value="true" th:text="TAK"></option>
+                <option th:value="false" th:text="NIE"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a th:href="@{/users}"><span class="btn btn-outline-warning">Anuluj</span></a>
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+    </form>
+    <br>
+    <hr/>
+    <div class="form-group">
+        <p><span>Role użytkownika:</span></p>
+        <p th:each="role : ${user.roles}">
+            <span th:if="${role.name == 'ROLE_ADMIN'}">ADMIN</span>
+            <span th:if="${role.name == 'ROLE_SELLER'}">SPRZEDAWCA</span>
+            <span th:if="${role.name == 'ROLE_CUSTOMER'}">KLIENT</span>
+        </p>
+    </div>
+
+    <form action="#" th:action="@{/users/addRole/}+${id}" th:object="${userRole}" method="post">
         <div class="form-group">
             <label>Rola</label>
-            <select id="unit" name="role" th:field="*{role}">
+            <select name="role" th:field="*{role}">
                 <option th:value="'ROLE_ADMIN'" th:text="Admin"></option>
                 <option th:value="'ROLE_SELLER'" th:text="Sprzedawca"></option>
                 <option th:value="'ROLE_CUSTOMER'" th:text="Klient"></option>
             </select>
+            <button type="submit" class="btn btn-success">Dodaj</button>
         </div>
-<!--        <div class="form-group">-->
-<!--            <label>Ile tego masz?</label>-->
-<!--            <input type="text" class="form-control" placeholder="email"-->
-<!--                   th:field="*{quantity}">-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--            <label>Cena za sztukę, kg lub litr?</label>-->
-<!--            <input type="text" class="form-control" placeholder="cena" th:field="*{price}">-->
-<!--        </div>-->
-        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
+    <form action="#" th:action="@{/users/removeRole/}+${id}" th:object="${userRole}" method="post">
+        <div class="form-group">
+            <label>Rola</label>
+            <select name="role" th:field="*{role}">
+                <option th:value="'ROLE_ADMIN'" th:text="Admin"></option>
+                <option th:value="'ROLE_SELLER'" th:text="Sprzedawca"></option>
+                <option th:value="'ROLE_CUSTOMER'" th:text="Klient"></option>
+            </select>
+            <button type="submit" class="btn btn-danger">Usuń</button>
+        </div>
+    </form>
 </div>
-
 <div th:replace="fragments/footer :: footer">
 </div>
 </body>
