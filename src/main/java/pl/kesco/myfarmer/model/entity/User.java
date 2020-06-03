@@ -52,4 +52,11 @@ public class User {
                     name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "customerId")
+    private Set<Order> orders = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "userId")
+    private Set<Product> products = new HashSet<>();
 }

@@ -58,8 +58,7 @@ public class UserController {
         optionaluser.ifPresent(
                 user -> {
                     editUserDto.setName(user.getName());
-                    String role = getRole(user);
-                    editUserDto.setRole(role);
+                    editUserDto.setRole(getRole(user));
                 }
         );
 
@@ -71,8 +70,12 @@ public class UserController {
 
     private String getRole(User user) {
 
-        //todo what if no roles
-        return user.getRoles().iterator().next().getName();
+        Set<Role> roles = user.getRoles();
+
+        if(roles.size() > 0){
+            return roles.iterator().next().getName();
+        }
+        return "No role attached";
     }
 
     @PostMapping("/edit/{id}")
@@ -91,6 +94,16 @@ public class UserController {
         });
 
         return new ModelAndView("redirect:/users", model);
+    }
+
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteUser(@PathVariable("id") Long userId) {
+
+        userService.delete(userId);
+
+        return "redirect:/users";
+
     }
 
     private Set<Role> updateRoles(String roleName, User user) {

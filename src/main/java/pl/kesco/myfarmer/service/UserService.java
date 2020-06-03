@@ -1,6 +1,7 @@
 package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class UserService {
 
     private final UserRepository userRepo;
@@ -45,15 +48,10 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public Optional<User> readById(Long userId) {
 
-        return userRepo.findById(userId);
-    }
-
-    @Transactional
     public boolean update(Long userId, User user) {
 
-        Optional<User> optionalUser = userRepo.findById(userId);
+        Optional<User> optionalUser = readById(userId);
 
         if (optionalUser.isEmpty()) {
             return false;
@@ -72,6 +70,26 @@ public class UserService {
         ).ifPresent(userRepo::save);
 
         return true;
+    }
+
+    public boolean delete(Long userId) {
+
+        Optional<User> optionalUser = readById(userId);
+
+        if(optionalUser.isPresent()){
+            Long userToDeleteId = optionalUser.get().getId();
+            optionalUser.ifPresent(userRepo::delete);
+
+            log.info("User with id {} was deleted!", userToDeleteId);
+            return true;
+        }
+
+        return false;
+    }
+
+    public Optional<User> readById(Long userId) {
+
+        return userRepo.findById(userId);
     }
 
 }

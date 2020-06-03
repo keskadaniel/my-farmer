@@ -15,23 +15,32 @@
             <th> Dostępny</th>
             <th> Rola</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${users.empty}">
             <td colspan="2">Nikogo tu nie ma</td>
         </tr>
-        <tr th:each="user : ${users}" class="user">
+        <tr rowspan="3" th:each="user : ${users}" class="user">
             <td><span th:text="${user.id}"> id </span></td>
             <td><span th:text="${user.name}"> nazwa </span></td>
             <td><span th:text="${user.email}"> email </span></td>
             <td><span th:text="${user.phoneNumber}"> numer </span></td>
-            <td><span th:text="${user.enabled}"> dostępny </span></td>
-            <td th:each="role : ${user.roles}">
-                <span th:text="${role.name}"> rola </span></td>
+            <td><span th:text="${user.enabled == true ? 'TAK' : 'NIE'}">aktywny</span></td>
             <td>
-                <a th:href="'/users/edit/'+${user.id}">
+                <span th:if="${user.roles[0].name == 'ROLE_ADMIN'}">ADMIN</span>
+                <span th:if="${user.roles[0].name == 'ROLE_SELLER'}">SPRZEDAWCA</span>
+                <span th:if="${user.roles[0].name == 'ROLE_CUSTOMER'}">KLIENT</span>
+            </td>
+            <td>
+                <a class="btn btn-outline-primary" th:href="'/users/edit/'+${user.id}">
                     <span>Edytuj</span>
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-outline-danger" th:href="'/users/delete/'+${user.id}">
+                    <span>Usuń</span>
                 </a>
             </td>
         </tr>
