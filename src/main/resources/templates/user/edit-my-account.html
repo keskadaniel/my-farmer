@@ -5,23 +5,30 @@
 <div th:replace="fragments/header :: header">
 </div>
 <div class="container">
-    <form action="#" th:action="@{/users/my-account/edit}" th:object="${user}" method="post">
-        <div class="form-group">
-            <label >Nazwa</label>
-            <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"
-                   th:field="*{email}">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-            <label >Nazwa</label>
-            <input type="text" class="form-control" placeholder="nazwa" th:field="*{phoneNumber}">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class="edit-user">
+        <form action="#" th:action="@{/users/my-account/edit}" th:object="${user}" method="post">
+            <div class="form-group">
+                <label>Nazwa</label>
+                <input type="text" class="form-control" placeholder="nazwa" th:field="*{name}">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"
+                       th:field="*{email}">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</span>
+            </div>
+            <div class="form-group">
+                <label>Telefon</label>
+                <input type="text" class="form-control" placeholder="nazwa" th:field="*{phoneNumber}">
+                <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Name Error</span>
+            </div>
+            <div class="form-group">
+                <a th:href="@{/users/my-account}"><span class="btn btn-outline-warning">Anuluj</span></a>
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </div>
+        </form>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer">
 </div>

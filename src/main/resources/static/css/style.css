@@ -89,6 +89,10 @@ body {
     margin: auto;
 }
 
+.edit-user input{
+    text-align: center;
+}
+
 tr {
     border-color: grey;
     border-radius: 5px;
