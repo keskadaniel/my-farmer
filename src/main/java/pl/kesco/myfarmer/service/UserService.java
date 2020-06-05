@@ -2,6 +2,7 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,7 @@ public class UserService {
     }
 
 
+    @PreAuthorize("isAuthenticated()")
     public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedUsername = authentication.getName();
@@ -64,8 +66,8 @@ public class UserService {
                         .enabled(user.isEnabled())
                         .activated(user.isActivated())
                         .name(user.getName())
-                        .password(user.getPassword())
                         .email(user.getEmail())
+                        .password(encoder.encode(user.getPassword()))
                         .build()
         ).ifPresent(userRepo::save);
 

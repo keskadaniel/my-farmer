@@ -14,7 +14,7 @@
             <p>email: <span th:text="${user.email}"></span></p>
             <p>telefon: <span th:text="${user.phoneNumber}"></span></p>
             <p>aktywny: <span th:text="${user.activated == true ? 'TAK' : 'NIE'}"></span></p>
-            <p><a href="#"><span class="material-icons">Zmień hasło</span></a></p>
+            <p><a th:href="'/users/my-account/change-password'"><span class="material-icons">Zmień hasło</span></a></p>
             <p><a th:href="'/users/my-account/edit'"><span class="material-icons">Edytuj swoje dane</span></a></p>
         </div>
         <div class="col">

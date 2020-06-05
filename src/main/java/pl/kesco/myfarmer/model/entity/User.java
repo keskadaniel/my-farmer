@@ -33,8 +33,6 @@ public class User {
     @Email(message = "Podaj prawidłowy adres email")
     private String email;
 
-    @NotEmpty(message = "Hasło jest wymagane")
-    @Size(min = 4, message = "Hasło musi mieć minimum 4 znaki")
     private String password;
     @Column(name = "phone_number")
     @Size(min = 9, max = 14, message = "Podaj prawidłowy numer telefonu")

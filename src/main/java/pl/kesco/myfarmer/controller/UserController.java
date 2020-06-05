@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.*;
@@ -161,9 +162,11 @@ public class UserController {
 
         var user = userService.getLoggedUser();
 
-        editUser.setName(user.getName());
-        editUser.setEmail(user.getEmail());
-        editUser.setPhoneNumber(getPhoneNumber(user));
+        editUser.toBuilder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(getPhoneNumber(user))
+                .build();
 
         model.addAttribute("user", editUser);
 
@@ -204,11 +207,57 @@ public class UserController {
                 .phoneNumber(editUserDataDto.getPhoneNumber())
                 .build());
 
-        if(!oldEmail.equals(editUserDataDto.getEmail())){
+        if (!oldEmail.equals(editUserDataDto.getEmail())) {
             return new ModelAndView("redirect:/logout");
         }
 
         return new ModelAndView("redirect:/users/my-account", model);
+    }
+
+    @GetMapping("/my-account/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public String showPasswordPage(final ModelMap model,
+                                   ChangePasswordDto changePasswordDto) {
+
+        model.addAttribute("password", changePasswordDto);
+
+        return "user/change-password";
+    }
+
+    @PostMapping("/my-account/change-password")
+    public ModelAndView changePassword(@Valid @ModelAttribute("password") ChangePasswordDto changePassword,
+                                       BindingResult bindingResult,
+                                       final ModelMap model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("password", changePassword);
+            return new ModelAndView("user/change-password", model);
+        }
+
+        if (validateRepeatedPassword(changePassword, bindingResult, model)){
+            model.addAttribute("password", changePassword);
+            return new ModelAndView("user/change-password", model);
+        }
+
+        var user = userService.getLoggedUser();
+
+        userService.update(user.getId(), user.toBuilder()
+                .password(changePassword.getNewPassword())
+                .build());
+
+        return new ModelAndView("redirect:/users/my-account", model);
+    }
+
+    private boolean validateRepeatedPassword(ChangePasswordDto changePassword, BindingResult bindingResult, ModelMap model) {
+        boolean correctRepeatedPassword = changePassword.getNewPassword()
+                                            .equals(changePassword.getRepeatPassword());
+
+        if (!correctRepeatedPassword) {
+            ObjectError error = new ObjectError("repeatPassword", "To nie jest to samo hasło!");
+            bindingResult.addError(error);
+            return true;
+        }
+        return false;
     }
 
     @GetMapping("/new")
