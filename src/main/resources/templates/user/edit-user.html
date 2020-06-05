@@ -8,10 +8,6 @@
 <div class="container">
     <form action="#" th:action="@{/users/edit/}+${id}" th:object="${userEdit}" method="post">
         <div class="form-group">
-            <label>Nazwa</label>
-            <input type="text" class="form-control edit-user" placeholder="nazwa" th:field="*{name}">
-        </div>
-        <div class="form-group">
             <label>Dostępny</label>
             <select id="unit" name="role" th:field="*{enabled}">
                 <option th:value="true" th:text="TAK"></option>
@@ -57,6 +53,7 @@
             <button type="submit" class="btn btn-danger">Usuń</button>
         </div>
     </form>
+    <a th:href="@{/users}"><span class="btn btn-outline-info">Wróć</span></a>
 </div>
 <div th:replace="fragments/footer :: footer">
 </div>

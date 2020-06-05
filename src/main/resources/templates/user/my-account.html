@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/common-head :: common-head"/>
 <body>
 <div th:replace="fragments/header :: header">
@@ -19,11 +19,13 @@
         <div class="col">
             <a th:href="'/basket'"><span class="btn btn-light">mój koszyk</span></a>
             <br>
-            <a th:href="'/products'"><span class="btn btn-light">moje produkty</span></a>
+            <a th:href="'/users/products'"><span class="btn btn-light">moje produkty</span></a>
             <br>
             <a th:href="'/orders'"><span class="btn btn-light">moje zamówienia</span></a>
             <br>
             <a th:href="'/orders/sold'"><span class="btn btn-light">moja sprzedaż</span></a>
+            <br>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="'/users'"><span class="btn btn-light">Użytkownicy</span></a>
         </div>
     </div>
 </div>

@@ -1,9 +1,7 @@
 package pl.kesco.myfarmer.model.dto;
 
 import lombok.*;
-import pl.kesco.myfarmer.model.entity.Role;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -11,10 +9,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EditUserDto {
-
-    @NotBlank
-    private String name;
+public class EnableUserDto {
 
     @NotNull
     private boolean enabled;

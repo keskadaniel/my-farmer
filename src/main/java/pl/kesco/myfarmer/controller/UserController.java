@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.*;
-import pl.kesco.myfarmer.model.entity.Product;
 import pl.kesco.myfarmer.model.entity.Role;
 import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.service.ProductService;
@@ -45,7 +44,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String showUserToEdit(@PathVariable("id") Long userId,
                                  final ModelMap model,
-                                 EditUserDto editUserDto,
+                                 EnableUserDto enableUserDto,
                                  EditRoleDto editRoleDto) {
 
         Optional<User> optionaluser = userService.readById(userId);
@@ -57,12 +56,11 @@ public class UserController {
 
         optionaluser.ifPresent(
                 user -> {
-                    editUserDto.setName(user.getName());
-                    editUserDto.setEnabled(user.isEnabled());
+                    enableUserDto.setEnabled(user.isEnabled());
                 }
         );
 
-        model.addAttribute("userEdit", editUserDto);
+        model.addAttribute("userEdit", enableUserDto);
         model.addAttribute("user", optionaluser.get());
         model.addAttribute("userRole", editRoleDto);
 
@@ -71,7 +69,7 @@ public class UserController {
 
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView editUser(@Valid @ModelAttribute("userEdit") EditUserDto editUserDto,
+    public ModelAndView editUser(@Valid @ModelAttribute("userEdit") EnableUserDto enableUserDto,
                                  @PathVariable("id") Long userId,
                                  final ModelMap model) {
 
@@ -79,8 +77,7 @@ public class UserController {
 
         user.ifPresent(user1 -> {
             userService.update(userId, user1.toBuilder()
-                    .name(editUserDto.getName())
-                    .enabled(editUserDto.isEnabled())
+                    .enabled(enableUserDto.isEnabled())
                     .build());
         });
 
@@ -112,9 +109,9 @@ public class UserController {
     private void editRole(EditRoleDto editRoleDto, Long userId, String action) {
         Optional<User> user = userService.readById(userId);
 
-        user.ifPresent(user1 -> {
-            userService.update(userId, user1.toBuilder()
-                    .roles(updateRoles(editRoleDto.getRole(), user1, action))
+        user.ifPresent(serToEdit -> {
+            userService.update(userId, serToEdit.toBuilder()
+                    .roles(updateRoles(editRoleDto.getRole(), serToEdit, action))
                     .build());
         });
     }
