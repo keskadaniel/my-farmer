@@ -2,6 +2,7 @@ package pl.kesco.myfarmer.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.kesco.myfarmer.model.entity.User;
 import pl.kesco.myfarmer.persistence.UserRepository;
 
 @Service
@@ -17,6 +18,22 @@ public class UtilService {
 
         return userRepository.findByEmailIgnoreCase(email)
                 .isEmpty();
+    }
+
+    public boolean validateIsEmailUniqueForExistingUser(String email, User user) {
+
+        boolean emailUnique = userRepository.findByEmailIgnoreCase(email)
+                .isEmpty();
+
+        if(!emailUnique && user.getEmail().equals(email)){
+            return true;
+        }
+
+        if(emailUnique){
+            return true;
+        }
+
+        return false;
     }
 
     public boolean validateIsProductNotOwnedByUser(Long productId) {

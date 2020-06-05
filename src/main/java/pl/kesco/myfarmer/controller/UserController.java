@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.kesco.myfarmer.model.dto.*;
@@ -15,6 +16,7 @@ import pl.kesco.myfarmer.service.UserService;
 import pl.kesco.myfarmer.service.UtilService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 import java.util.Set;
 
@@ -151,6 +153,56 @@ public class UserController {
         return "user/my-account";
     }
 
+    @GetMapping("/my-account/edit")
+    @PreAuthorize("isAuthenticated()")
+    public String showUserDataToEdit(final ModelMap model,
+                                     EditUserDataDto editUser) {
+
+        var user = userService.getLoggedUser();
+
+        editUser.setName(user.getName());
+        editUser.setEmail(user.getEmail());
+        editUser.setPhoneNumber(getPhoneNumber(user));
+
+        model.addAttribute("user", editUser);
+
+        return "user/edit-my-account";
+    }
+
+    private String getPhoneNumber(User user) {
+
+        if (StringUtils.isEmpty(user.getPhoneNumber())) {
+            return "No number";
+        }
+
+        return user.getPhoneNumber();
+    }
+
+    @PostMapping("/my-account/edit")
+    public ModelAndView editMyAccount(@Valid @ModelAttribute("user") EditUserDataDto editUserDataDto,
+                                      final ModelMap model) {
+        var user = userService.getLoggedUser();
+        String oldEmail = user.getEmail();
+
+        boolean isEmailUnique = validateUniqueEmailForAccount(editUserDataDto.getEmail(), user);
+
+        if (isEmailUnique == false) {
+            return new ModelAndView("redirect:/oops", model);
+        }
+
+        userService.update(user.getId(), user.toBuilder()
+                .name(editUserDataDto.getName())
+                .email(editUserDataDto.getEmail())
+                .phoneNumber(editUserDataDto.getPhoneNumber())
+                .build());
+
+        if(!oldEmail.equals(editUserDataDto.getEmail())){
+            return new ModelAndView("redirect:/logout");
+        }
+
+        return new ModelAndView("redirect:/users/my-account", model);
+    }
+
     @GetMapping("/new")
     public String addUser(AddUserDto addUserDto, final ModelMap model) {
         //TODO model has params to rm
@@ -189,6 +241,10 @@ public class UserController {
 
     private boolean validateUniqueEmailForAccount(String email) {
         return utilService.validateIsEmailUnique(email);
+    }
+
+    private boolean validateUniqueEmailForAccount(String email, User user) {
+        return utilService.validateIsEmailUniqueForExistingUser(email, user);
     }
 
 

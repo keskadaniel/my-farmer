@@ -69,6 +69,7 @@ public class UserService {
                         .build()
         ).ifPresent(userRepo::save);
 
+        log.info("User with id {} successfully updated!", optionalUser.get().getId());
         return true;
     }
 
