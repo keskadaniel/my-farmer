@@ -37,5 +37,7 @@ public class Data {
     private String deletehash;
     private String name;
     private String link;
+    private String hls;
+    private String mp4;
 
 }
